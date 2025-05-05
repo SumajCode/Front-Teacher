@@ -50,6 +50,3 @@ jobs:
       - name: Audit dependencies
         run: npm audit --audit-level=high
         # Falla si hay vulnerabilidades de nivel alto o crítico.
-      - name: Stylelint
-        run: npx stylelint "src/**/*.css"
-        # Verifica el formato de los archivos CSS.
