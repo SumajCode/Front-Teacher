@@ -4,9 +4,9 @@ import './globals.css'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <Layout>
-        <body>{children}</body>
-      </Layout>
+      <body>
+        <Layout>{children}</Layout>
+      </body>
     </html>
   )
 }
