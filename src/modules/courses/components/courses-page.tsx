@@ -1,38 +1,37 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react"
 
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Input } from '@/components/ui/input'
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select"
 
-import { CourseGrid } from '@/modules/courses/components/course-grid'
-import { CourseTable } from '@/modules/courses/components/course-table'
-import { CreateCourseDialog } from '@/modules/courses/components/dialogs/create-course-dialog'
-import { AddContentDialog } from '@/modules/courses/components/dialogs/add-content-dialog'
-import { EmptyState } from '@/modules/courses/components/empty-state'
-import { useCourseFilters } from '@/modules/courses/hooks/use-course-filters'
-import { courses } from '@/modules/courses/data/courses'
-import { Plus, Search } from 'lucide-react'
+import { CourseGrid } from "@/modules/courses/components/course-grid"
+import { CourseTable } from "@/modules/courses/components/course-table"
+import { CreateCourseDialog } from "@/modules/courses/components/dialogs/create-course-dialog"
+import { AddContentDialog } from "@/modules/courses/components/dialogs/add-content-dialog"
+import { EmptyState } from "@/modules/courses/components/empty-state"
+import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters"
+import { courses } from "@/modules/courses/data/courses"
+import { Plus, Search } from "lucide-react"
 
 export function CoursesPage() {
-  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid')
-  const [isCreateCourseDialogOpen, setIsCreateCourseDialogOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
+  const [isCreateCourseDialogOpen, setIsCreateCourseDialogOpen] =
+    useState(false)
   const [isAddContentDialogOpen, setIsAddContentDialogOpen] = useState(false)
-  const [contentType, setContentType] = useState<string>('lesson')
-  const [currentTab, setCurrentTab] = useState('all')
+  const [contentType, setContentType] = useState<string>("lesson")
+  const [currentTab, setCurrentTab] = useState("all")
 
-  const { searchQuery, setSearchQuery, sortBy, setSortBy, filteredCourses } = useCourseFilters(
-    courses,
-    currentTab,
-  )
+  const { searchQuery, setSearchQuery, sortBy, setSortBy, filteredCourses } =
+    useCourseFilters(courses, currentTab)
 
   return (
     <div className="space-y-6">
@@ -41,7 +40,9 @@ export function CoursesPage() {
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Mis Cursos
           </h1>
-          <p className="text-muted-foreground">Gestiona tus cursos y contenido educativo</p>
+          <p className="text-muted-foreground">
+            Gestiona tus cursos y contenido educativo
+          </p>
         </div>
         <Button
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md"
@@ -89,10 +90,12 @@ export function CoursesPage() {
               </TabsList>
               <div className="flex items-center gap-2 ml-2">
                 <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  variant={viewMode === "grid" ? "default" : "outline"}
                   size="icon"
-                  className={viewMode === 'grid' ? 'bg-blue-600 hover:bg-blue-700' : ''}
-                  onClick={() => setViewMode('grid')}
+                  className={
+                    viewMode === "grid" ? "bg-blue-600 hover:bg-blue-700" : ""
+                  }
+                  onClick={() => setViewMode("grid")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -113,10 +116,12 @@ export function CoursesPage() {
                   <span className="sr-only">Vista de cuadrícula</span>
                 </Button>
                 <Button
-                  variant={viewMode === 'table' ? 'default' : 'outline'}
+                  variant={viewMode === "table" ? "default" : "outline"}
                   size="icon"
-                  className={viewMode === 'table' ? 'bg-blue-600 hover:bg-blue-700' : ''}
-                  onClick={() => setViewMode('table')}
+                  className={
+                    viewMode === "table" ? "bg-blue-600 hover:bg-blue-700" : ""
+                  }
+                  onClick={() => setViewMode("table")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -160,29 +165,37 @@ export function CoursesPage() {
           </div>
 
           <TabsContent value="all" className="mt-4 space-y-4">
-            {viewMode === 'grid' ? (
+            {viewMode === "grid" ? (
               <CourseGrid courses={filteredCourses} />
             ) : (
               <CourseTable courses={filteredCourses} />
             )}
 
             {filteredCourses.length === 0 && (
-              <EmptyState type="all" onCreateCourse={() => setIsCreateCourseDialogOpen(true)} />
+              <EmptyState
+                type="all"
+                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
+              />
             )}
           </TabsContent>
 
           <TabsContent value="published" className="mt-4 space-y-4">
-            {viewMode === 'grid' ? (
+            {viewMode === "grid" ? (
               <CourseGrid
-                courses={filteredCourses.filter((course) => course.status === 'published')}
+                courses={filteredCourses.filter(
+                  (course) => course.status === "published"
+                )}
               />
             ) : (
               <CourseTable
-                courses={filteredCourses.filter((course) => course.status === 'published')}
+                courses={filteredCourses.filter(
+                  (course) => course.status === "published"
+                )}
               />
             )}
 
-            {filteredCourses.filter((course) => course.status === 'published').length === 0 && (
+            {filteredCourses.filter((course) => course.status === "published")
+              .length === 0 && (
               <EmptyState
                 type="published"
                 onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
@@ -191,30 +204,45 @@ export function CoursesPage() {
           </TabsContent>
 
           <TabsContent value="draft" className="mt-4 space-y-4">
-            {viewMode === 'grid' ? (
-              <CourseGrid courses={filteredCourses.filter((course) => course.status === 'draft')} />
+            {viewMode === "grid" ? (
+              <CourseGrid
+                courses={filteredCourses.filter(
+                  (course) => course.status === "draft"
+                )}
+              />
             ) : (
               <CourseTable
-                courses={filteredCourses.filter((course) => course.status === 'draft')}
+                courses={filteredCourses.filter(
+                  (course) => course.status === "draft"
+                )}
               />
             )}
 
-            {filteredCourses.filter((course) => course.status === 'draft').length === 0 && (
-              <EmptyState type="draft" onCreateCourse={() => setIsCreateCourseDialogOpen(true)} />
+            {filteredCourses.filter((course) => course.status === "draft")
+              .length === 0 && (
+              <EmptyState
+                type="draft"
+                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
+              />
             )}
           </TabsContent>
           <TabsContent value="archived" className="mt-4 space-y-4">
-            {viewMode === 'grid' ? (
+            {viewMode === "grid" ? (
               <CourseGrid
-                courses={filteredCourses.filter((course) => course.status === 'archived')}
+                courses={filteredCourses.filter(
+                  (course) => course.status === "archived"
+                )}
               />
             ) : (
               <CourseTable
-                courses={filteredCourses.filter((course) => course.status === 'archived')}
+                courses={filteredCourses.filter(
+                  (course) => course.status === "archived"
+                )}
               />
             )}
 
-            {filteredCourses.filter((course) => course.status === 'archived').length === 0 && (
+            {filteredCourses.filter((course) => course.status === "archived")
+              .length === 0 && (
               <EmptyState
                 type="archived"
                 onCreateCourse={() => setIsCreateCourseDialogOpen(true)}

@@ -1,9 +1,12 @@
-import Link from 'next/link'
-import { Calendar, Users, BookOpen } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getStatusBadge, getColorClass } from '@/modules/courses/utils/course-helpers'
-import type { Course } from '@/modules/courses/types'
+import Link from "next/link"
+import { Calendar, Users, BookOpen } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  getStatusBadge,
+  getColorClass,
+} from "@/modules/courses/utils/course-helpers"
+import type { Course } from "@/modules/courses/types"
 
 interface CourseTableProps {
   courses: Course[]
@@ -28,13 +31,13 @@ export function CourseTable({ courses }: CourseTableProps) {
             {courses.map((course, index) => (
               <tr
                 key={course.id}
-                className={`border-t ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-blue-50 transition-colors`}
+                className={`border-t ${index % 2 === 0 ? "bg-white" : "bg-slate-50"} hover:bg-blue-50 transition-colors`}
               >
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10 rounded-md">
                       <AvatarImage
-                        src={course.image || '/placeholder.svg'}
+                        src={course.image || "/placeholder.svg"}
                         alt={course.title}
                         className="object-cover"
                       />
@@ -73,11 +76,17 @@ export function CourseTable({ courses }: CourseTableProps) {
                 <td className="p-4">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span>{new Date(course.lastUpdated).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(course.lastUpdated).toLocaleDateString()}
+                    </span>
                   </div>
                 </td>
                 <td className="p-4">
-                  <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
+                  <Button
+                    asChild
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
                     <Link href={`/courses/${course.id}`}>Editar</Link>
                   </Button>
                 </td>

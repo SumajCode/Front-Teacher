@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { BookPlus, Command, HomeIcon, UserIcon } from 'lucide-react'
+import * as React from "react"
+import { BookPlus, Command, HomeIcon, UserIcon } from "lucide-react"
 
-import { NavMain } from '@/components/nav-main'
+import { NavMain } from "@/components/nav-main"
 
-import { NavUser } from '@/components/nav-user'
+import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -29,7 +29,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">SumajCode</span>
-                  <span className="truncate text-xs text-muted">Generacion de Software</span>
+                  <span className="truncate text-xs text-muted">
+                    Generacion de Software
+                  </span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -40,30 +42,30 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain
           groups={[
             {
-              groupName: 'Principal',
+              groupName: "Principal",
               items: [
                 {
-                  title: 'Inicio',
-                  url: '/',
+                  title: "Inicio",
+                  url: "/",
                   icon: HomeIcon,
                 },
                 {
-                  title: 'Usuarios',
-                  url: '/usuarios',
+                  title: "Usuarios",
+                  url: "/usuarios",
                   icon: UserIcon,
                   items: [
-                    { title: 'Alumnos', url: '/usuarios/alumnos' }, // <-- Activo
-                    { title: 'Profesores', url: '/usuarios/profesores' },
+                    { title: "Alumnos", url: "/usuarios/alumnos" }, // <-- Activo
+                    { title: "Profesores", url: "/usuarios/profesores" },
                   ],
                 },
               ],
             },
             {
-              groupName: 'Cursos',
+              groupName: "Cursos",
               items: [
                 {
-                  title: 'Mis Cursos',
-                  url: '/courses',
+                  title: "Mis Cursos",
+                  url: "/courses",
                   icon: BookPlus,
                 },
               ],
@@ -72,7 +74,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={{ name: 'Erick', email: 'erick@example.com', avatar: '' }} />
+        <NavUser
+          user={{ name: "Erick", email: "erick@example.com", avatar: "" }}
+        />
       </SidebarFooter>
     </Sidebar>
   )

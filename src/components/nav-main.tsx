@@ -1,9 +1,13 @@
-'use client'
+"use client"
 
-import { usePathname } from 'next/navigation'
-import { ChevronRight, type LucideIcon } from 'lucide-react'
+import { usePathname } from "next/navigation"
+import { ChevronRight, type LucideIcon } from "lucide-react"
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,7 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar"
 
 type NavItem = {
   title: string
@@ -58,8 +62,8 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                         tooltip={item.title}
                         className={
                           isItemActive
-                            ? 'bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg'
-                            : ''
+                            ? "bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg"
+                            : ""
                         }
                       >
                         {item.icon && <item.icon />}
@@ -77,8 +81,8 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                                 asChild
                                 className={
                                   isSubActive
-                                    ? 'bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg'
-                                    : ''
+                                    ? "bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg"
+                                    : ""
                                 }
                               >
                                 <a href={subItem.url}>
@@ -99,11 +103,14 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                     tooltip={item.title}
                     className={
                       isItemActive
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg'
-                        : ''
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground border-l-4 border-[#a78bfa] rounded-l-lg"
+                        : ""
                     }
                   >
-                    <a href={item.url} className="flex items-center gap-2 w-full">
+                    <a
+                      href={item.url}
+                      className="flex items-center gap-2 w-full"
+                    >
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </a>

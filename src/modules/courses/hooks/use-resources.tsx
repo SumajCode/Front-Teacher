@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { File, FileText } from 'lucide-react'
+import { useState } from "react"
+import { File, FileText } from "lucide-react"
 
 interface Resource {
   id: string
@@ -11,13 +11,13 @@ interface Resource {
 
 export function useResources() {
   const [resources, setResources] = useState<Resource[]>([])
-  const [newResourceName, setNewResourceName] = useState('')
+  const [newResourceName, setNewResourceName] = useState("")
 
   // Función para manejar la adición de recursos
   const handleAddResource = () => {
     if (!newResourceName.trim()) return
 
-    const fileType = newResourceName.split('.').pop() || 'pdf'
+    const fileType = newResourceName.split(".").pop() || "pdf"
 
     setResources([
       ...resources,
@@ -28,7 +28,7 @@ export function useResources() {
       },
     ])
 
-    setNewResourceName('')
+    setNewResourceName("")
   }
 
   // Función para eliminar un recurso
@@ -39,20 +39,20 @@ export function useResources() {
   // Función para obtener el icono según el tipo de archivo
   const getResourceIcon = (type: string) => {
     switch (type) {
-      case 'pdf':
+      case "pdf":
         return (
           <div className="p-1 rounded-md bg-rose-100 text-rose-600">
             <FileText className="h-4 w-4" />
           </div>
         )
-      case 'doc':
-      case 'docx':
+      case "doc":
+      case "docx":
         return (
           <div className="p-1 rounded-md bg-blue-100 text-blue-600">
             <FileText className="h-4 w-4" />
           </div>
         )
-      case 'zip':
+      case "zip":
         return (
           <div className="p-1 rounded-md bg-amber-100 text-amber-600">
             <File className="h-4 w-4" />

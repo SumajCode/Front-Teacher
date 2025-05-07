@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState } from "react"
+import Link from "next/link"
 import {
   ArrowLeft,
   Calendar,
@@ -23,20 +23,26 @@ import {
   ClipboardList,
   GraduationCap,
   Download,
-} from 'lucide-react'
+} from "lucide-react"
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
+} from "@/components/ui/accordion"
 import {
   Dialog,
   DialogContent,
@@ -44,130 +50,136 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Badge } from '@/components/ui/badge'
-import { Switch } from '@/components/ui/switch'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Progress } from '@/components/ui/progress'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+} from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Progress } from "@/components/ui/progress"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-export default function CourseEditPage({ params }: { params: { courseId: string } }) {
+export default function CourseEditPage({
+  params,
+}: {
+  params: { courseId: string }
+}) {
   const [modules, setModules] = useState([
     {
-      id: '1',
-      title: 'Introducción al curso',
+      id: "1",
+      title: "Introducción al curso",
       lessons: [
         {
-          id: '1',
-          title: 'Bienvenida al curso',
-          duration: '5:20',
-          type: 'video',
+          id: "1",
+          title: "Bienvenida al curso",
+          duration: "5:20",
+          type: "video",
           resources: [
-            { id: 'r1', name: 'Presentación.pdf', type: 'pdf' },
-            { id: 'r2', name: 'Guía de inicio.docx', type: 'doc' },
+            { id: "r1", name: "Presentación.pdf", type: "pdf" },
+            { id: "r2", name: "Guía de inicio.docx", type: "doc" },
           ],
         },
         {
-          id: '2',
-          title: '¿Qué aprenderás?',
-          duration: '8:45',
-          type: 'video',
+          id: "2",
+          title: "¿Qué aprenderás?",
+          duration: "8:45",
+          type: "video",
           resources: [],
         },
         {
-          id: '3',
-          title: 'Configuración del entorno',
-          duration: '12:30',
-          type: 'video',
-          resources: [{ id: 'r3', name: 'Instrucciones de instalación.pdf', type: 'pdf' }],
+          id: "3",
+          title: "Configuración del entorno",
+          duration: "12:30",
+          type: "video",
+          resources: [
+            { id: "r3", name: "Instrucciones de instalación.pdf", type: "pdf" },
+          ],
         },
         {
-          id: '4',
-          title: 'Cuestionario inicial',
-          duration: '30 min',
-          type: 'quiz',
-          openDate: '2023-05-15T10:00',
-          closeDate: '2023-06-15T23:59',
-          publishDate: '2023-05-15T10:00',
+          id: "4",
+          title: "Cuestionario inicial",
+          duration: "30 min",
+          type: "quiz",
+          openDate: "2023-05-15T10:00",
+          closeDate: "2023-06-15T23:59",
+          publishDate: "2023-05-15T10:00",
           resources: [],
           grade: 85,
         },
       ],
     },
     {
-      id: '2',
-      title: 'Fundamentos básicos',
+      id: "2",
+      title: "Fundamentos básicos",
       lessons: [
         {
-          id: '5',
-          title: 'Conceptos clave',
-          duration: '15:10',
-          type: 'video',
+          id: "5",
+          title: "Conceptos clave",
+          duration: "15:10",
+          type: "video",
           resources: [],
         },
         {
-          id: '6',
-          title: 'Primeros pasos',
-          duration: '18:22',
-          type: 'video',
+          id: "6",
+          title: "Primeros pasos",
+          duration: "18:22",
+          type: "video",
           resources: [],
         },
         {
-          id: '7',
-          title: 'Tarea práctica: Implementación básica',
-          duration: '2 horas',
-          type: 'assignment',
-          openDate: '2023-05-20T10:00',
-          closeDate: '2023-05-27T23:59',
-          publishDate: '2023-05-20T10:00',
+          id: "7",
+          title: "Tarea práctica: Implementación básica",
+          duration: "2 horas",
+          type: "assignment",
+          openDate: "2023-05-20T10:00",
+          closeDate: "2023-05-27T23:59",
+          publishDate: "2023-05-20T10:00",
           resources: [
-            { id: 'r4', name: 'Instrucciones de la tarea.pdf', type: 'pdf' },
-            { id: 'r5', name: 'Plantilla de proyecto.zip', type: 'zip' },
+            { id: "r4", name: "Instrucciones de la tarea.pdf", type: "pdf" },
+            { id: "r5", name: "Plantilla de proyecto.zip", type: "zip" },
           ],
           grade: 78,
         },
       ],
     },
     {
-      id: '3',
-      title: 'Proyectos prácticos',
+      id: "3",
+      title: "Proyectos prácticos",
       lessons: [
         {
-          id: '8',
-          title: 'Proyecto 1: Introducción',
-          duration: '7:15',
-          type: 'video',
+          id: "8",
+          title: "Proyecto 1: Introducción",
+          duration: "7:15",
+          type: "video",
           resources: [],
         },
         {
-          id: '9',
-          title: 'Proyecto 1: Desarrollo',
-          duration: '22:40',
-          type: 'video',
+          id: "9",
+          title: "Proyecto 1: Desarrollo",
+          duration: "22:40",
+          type: "video",
           resources: [],
         },
         {
-          id: '10',
-          title: 'Proyecto 1: Finalización',
-          duration: '14:55',
-          type: 'video',
+          id: "10",
+          title: "Proyecto 1: Finalización",
+          duration: "14:55",
+          type: "video",
           resources: [],
         },
         {
-          id: '11',
-          title: 'Examen final del módulo',
-          duration: '1 hora',
-          type: 'exam',
-          openDate: '2023-06-01T10:00',
-          closeDate: '2023-06-01T23:59',
-          publishDate: '2023-05-30T10:00',
+          id: "11",
+          title: "Examen final del módulo",
+          duration: "1 hora",
+          type: "exam",
+          openDate: "2023-06-01T10:00",
+          closeDate: "2023-06-01T23:59",
+          publishDate: "2023-05-30T10:00",
           resources: [],
           grade: 92,
         },
@@ -180,44 +192,51 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
   const [isAssignmentDialogOpen, setIsAssignmentDialogOpen] = useState(false)
   const [editingAssignment, setEditingAssignment] = useState<any>(null)
   const [isAddContentDialogOpen, setIsAddContentDialogOpen] = useState(false)
-  const [contentType, setContentType] = useState<string>('lesson')
+  const [contentType, setContentType] = useState<string>("lesson")
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false)
   const [isAddStudentDialogOpen, setIsAddStudentDialogOpen] = useState(false)
-  const [isStudentDetailsDialogOpen, setIsStudentDetailsDialogOpen] = useState(false)
+  const [isStudentDetailsDialogOpen, setIsStudentDetailsDialogOpen] =
+    useState(false)
   const [selectedStudent, setSelectedStudent] = useState<any>(null)
-  const [lessonEditTab, setLessonEditTab] = useState('details')
-  const [assignmentEditTab, setAssignmentEditTab] = useState('details')
-  const [newResourceName, setNewResourceName] = useState('')
+  const [lessonEditTab, setLessonEditTab] = useState("details")
+  const [assignmentEditTab, setAssignmentEditTab] = useState("details")
+  const [newResourceName, setNewResourceName] = useState("")
 
   const students = [
     {
-      id: '1',
-      name: 'Carlos Rodríguez',
-      email: 'carlos@example.com',
+      id: "1",
+      name: "Carlos Rodríguez",
+      email: "carlos@example.com",
       progress: 75,
-      lastActive: 'Hoy',
+      lastActive: "Hoy",
     },
-    { id: '2', name: 'María López', email: 'maria@example.com', progress: 45, lastActive: 'Ayer' },
     {
-      id: '3',
-      name: 'Juan Pérez',
-      email: 'juan@example.com',
+      id: "2",
+      name: "María López",
+      email: "maria@example.com",
+      progress: 45,
+      lastActive: "Ayer",
+    },
+    {
+      id: "3",
+      name: "Juan Pérez",
+      email: "juan@example.com",
       progress: 90,
-      lastActive: 'Hace 3 días',
+      lastActive: "Hace 3 días",
     },
     {
-      id: '4',
-      name: 'Ana Martínez',
-      email: 'ana@example.com',
+      id: "4",
+      name: "Ana Martínez",
+      email: "ana@example.com",
       progress: 30,
-      lastActive: 'Hace 1 semana',
+      lastActive: "Hace 1 semana",
     },
     {
-      id: '5',
-      name: 'Roberto Sánchez',
-      email: 'roberto@example.com',
+      id: "5",
+      name: "Roberto Sánchez",
+      email: "roberto@example.com",
       progress: 60,
-      lastActive: 'Hoy',
+      lastActive: "Hoy",
     },
   ]
 
@@ -226,48 +245,48 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
   const [studentGrades, setStudentGrades] = useState([
     {
-      studentId: '1',
-      name: 'Carlos Rodríguez',
+      studentId: "1",
+      name: "Carlos Rodríguez",
       grades: [
-        { evaluationId: '4', grade: 85 },
-        { evaluationId: '7', grade: 78 },
-        { evaluationId: '11', grade: 92 },
+        { evaluationId: "4", grade: 85 },
+        { evaluationId: "7", grade: 78 },
+        { evaluationId: "11", grade: 92 },
       ],
     },
     {
-      studentId: '2',
-      name: 'María López',
+      studentId: "2",
+      name: "María López",
       grades: [
-        { evaluationId: '4', grade: 92 },
-        { evaluationId: '7', grade: 85 },
-        { evaluationId: '11', grade: 88 },
+        { evaluationId: "4", grade: 92 },
+        { evaluationId: "7", grade: 85 },
+        { evaluationId: "11", grade: 88 },
       ],
     },
     {
-      studentId: '3',
-      name: 'Juan Pérez',
+      studentId: "3",
+      name: "Juan Pérez",
       grades: [
-        { evaluationId: '4', grade: 78 },
-        { evaluationId: '7', grade: 90 },
-        { evaluationId: '11', grade: 95 },
+        { evaluationId: "4", grade: 78 },
+        { evaluationId: "7", grade: 90 },
+        { evaluationId: "11", grade: 95 },
       ],
     },
     {
-      studentId: '4',
-      name: 'Ana Martínez',
+      studentId: "4",
+      name: "Ana Martínez",
       grades: [
-        { evaluationId: '4', grade: 65 },
-        { evaluationId: '7', grade: 72 },
-        { evaluationId: '11', grade: 80 },
+        { evaluationId: "4", grade: 65 },
+        { evaluationId: "7", grade: 72 },
+        { evaluationId: "11", grade: 80 },
       ],
     },
     {
-      studentId: '5',
-      name: 'Roberto Sánchez',
+      studentId: "5",
+      name: "Roberto Sánchez",
       grades: [
-        { evaluationId: '4', grade: 88 },
-        { evaluationId: '7', grade: 75 },
-        { evaluationId: '11', grade: 82 },
+        { evaluationId: "4", grade: 88 },
+        { evaluationId: "7", grade: 75 },
+        { evaluationId: "11", grade: 82 },
       ],
     },
   ])
@@ -277,25 +296,29 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
     .flatMap((module) =>
       module.lessons.filter(
         (lesson) =>
-          lesson.type === 'quiz' || lesson.type === 'assignment' || lesson.type === 'exam',
-      ),
+          lesson.type === "quiz" ||
+          lesson.type === "assignment" ||
+          lesson.type === "exam"
+      )
     )
     .map((lesson) => lesson.grade || 0)
 
   const averageGrade =
     allGrades.length > 0
-      ? Math.round(allGrades.reduce((sum, grade) => sum + grade, 0) / allGrades.length)
+      ? Math.round(
+          allGrades.reduce((sum, grade) => sum + grade, 0) / allGrades.length
+        )
       : 0
 
   const handleEditLesson = (lesson: any) => {
     setEditingLesson(lesson)
-    setLessonEditTab('details')
+    setLessonEditTab("details")
     setIsLessonDialogOpen(true)
   }
 
   const handleEditAssignment = (lesson: any) => {
     setEditingAssignment(lesson)
-    setAssignmentEditTab('details')
+    setAssignmentEditTab("details")
     setIsAssignmentDialogOpen(true)
   }
 
@@ -321,7 +344,7 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
     const newResource = {
       id: `r${Date.now()}`,
       name: resourceName,
-      type: resourceName.split('.').pop() || 'pdf',
+      type: resourceName.split(".").pop() || "pdf",
     }
 
     // Actualizar el estado de los módulos para añadir el nuevo recurso
@@ -341,7 +364,7 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
     })
 
     setModules(updatedModules)
-    setNewResourceName('')
+    setNewResourceName("")
   }
 
   const handleDeleteResource = (resourceId: string, lessonId: string) => {
@@ -353,7 +376,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
           if (lesson.id === lessonId) {
             return {
               ...lesson,
-              resources: lesson.resources.filter((resource) => resource.id !== resourceId),
+              resources: lesson.resources.filter(
+                (resource) => resource.id !== resourceId
+              ),
             }
           }
           return lesson
@@ -366,20 +391,20 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
   const getResourceIcon = (type: string) => {
     switch (type) {
-      case 'pdf':
+      case "pdf":
         return (
           <div className="p-1 rounded-md bg-rose-100 text-rose-600">
             <FileText className="h-4 w-4" />
           </div>
         )
-      case 'doc':
-      case 'docx':
+      case "doc":
+      case "docx":
         return (
           <div className="p-1 rounded-md bg-blue-100 text-blue-600">
             <FileText className="h-4 w-4" />
           </div>
         )
-      case 'zip':
+      case "zip":
         return (
           <div className="p-1 rounded-md bg-amber-100 text-amber-600">
             <File className="h-4 w-4" />
@@ -396,25 +421,25 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
   const getLessonIcon = (type: string) => {
     switch (type) {
-      case 'video':
+      case "video":
         return (
           <div className="p-1 rounded-md bg-blue-100 text-blue-600">
             <FileText className="h-4 w-4" />
           </div>
         )
-      case 'quiz':
+      case "quiz":
         return (
           <div className="p-1 rounded-md bg-amber-100 text-amber-600">
             <FileCheck className="h-4 w-4" />
           </div>
         )
-      case 'assignment':
+      case "assignment":
         return (
           <div className="p-1 rounded-md bg-emerald-100 text-emerald-600">
             <FileCheck className="h-4 w-4" />
           </div>
         )
-      case 'exam':
+      case "exam":
         return (
           <div className="p-1 rounded-md bg-rose-100 text-rose-600">
             <FileCheck className="h-4 w-4" />
@@ -495,13 +520,16 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-end">
-                  <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleAddModule}>
+                  <Button
+                    className="bg-blue-600 hover:bg-blue-700"
+                    onClick={handleAddModule}
+                  >
                     <Plus className="mr-2 h-4 w-4" />
                     Añadir módulo
                   </Button>
                 </div>
 
-                <Accordion type="multiple" defaultValue={['1']}>
+                <Accordion type="multiple" defaultValue={["1"]}>
                   {modules.map((module) => (
                     <AccordionItem
                       key={module.id}
@@ -544,43 +572,48 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                                 {getLessonIcon(lesson.type)}
                                 <div>
                                   <div className="flex items-center gap-2">
-                                    <span className="font-medium">{lesson.title}</span>
+                                    <span className="font-medium">
+                                      {lesson.title}
+                                    </span>
                                     <Badge
                                       variant={
-                                        lesson.type === 'video'
-                                          ? 'default'
-                                          : lesson.type === 'quiz'
-                                            ? 'secondary'
-                                            : lesson.type === 'assignment'
-                                              ? 'outline'
-                                              : 'destructive'
+                                        lesson.type === "video"
+                                          ? "default"
+                                          : lesson.type === "quiz"
+                                            ? "secondary"
+                                            : lesson.type === "assignment"
+                                              ? "outline"
+                                              : "destructive"
                                       }
                                     >
-                                      {lesson.type === 'video'
-                                        ? 'Video'
-                                        : lesson.type === 'quiz'
-                                          ? 'Cuestionario'
-                                          : lesson.type === 'assignment'
-                                            ? 'Tarea'
-                                            : 'Examen'}
+                                      {lesson.type === "video"
+                                        ? "Video"
+                                        : lesson.type === "quiz"
+                                          ? "Cuestionario"
+                                          : lesson.type === "assignment"
+                                            ? "Tarea"
+                                            : "Examen"}
                                     </Badge>
                                   </div>
                                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                     <span className="flex items-center gap-1">
-                                      <Clock className="h-3 w-3" /> {lesson.duration}
+                                      <Clock className="h-3 w-3" />{" "}
+                                      {lesson.duration}
                                     </span>
-                                    {(lesson.type === 'quiz' ||
-                                      lesson.type === 'assignment' ||
-                                      lesson.type === 'exam') && (
+                                    {(lesson.type === "quiz" ||
+                                      lesson.type === "assignment" ||
+                                      lesson.type === "exam") && (
                                       <span className="flex items-center gap-1">
-                                        <Calendar className="h-3 w-3" /> Cierra:{' '}
-                                        {new Date(lesson.closeDate).toLocaleDateString()}
+                                        <Calendar className="h-3 w-3" /> Cierra:{" "}
+                                        {new Date(
+                                          lesson.closeDate
+                                        ).toLocaleDateString()}
                                       </span>
                                     )}
                                     {lesson.resources.length > 0 && (
                                       <span className="flex items-center gap-1">
-                                        <File className="h-3 w-3" /> {lesson.resources.length}{' '}
-                                        recursos
+                                        <File className="h-3 w-3" />{" "}
+                                        {lesson.resources.length} recursos
                                       </span>
                                     )}
                                   </div>
@@ -592,13 +625,15 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                                   size="icon"
                                   className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
                                   onClick={() =>
-                                    lesson.type === 'video'
+                                    lesson.type === "video"
                                       ? handleEditLesson(lesson)
                                       : handleEditAssignment(lesson)
                                   }
                                 >
                                   <Edit className="h-4 w-4" />
-                                  <span className="sr-only">Editar lección</span>
+                                  <span className="sr-only">
+                                    Editar lección
+                                  </span>
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -606,7 +641,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                                   className="text-red-600 hover:text-red-800 hover:bg-red-100"
                                 >
                                   <Trash className="h-4 w-4" />
-                                  <span className="sr-only">Eliminar lección</span>
+                                  <span className="sr-only">
+                                    Eliminar lección
+                                  </span>
                                 </Button>
                               </div>
                             </div>
@@ -636,12 +673,17 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 <Users className="h-5 w-5 text-purple-600" />
                 Estudiantes del curso
               </CardTitle>
-              <CardDescription>Gestiona los estudiantes inscritos en este curso</CardDescription>
+              <CardDescription>
+                Gestiona los estudiantes inscritos en este curso
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center gap-2">
-                  <Input placeholder="Buscar estudiantes..." className="w-[250px]" />
+                  <Input
+                    placeholder="Buscar estudiantes..."
+                    className="w-[250px]"
+                  />
                   <Button
                     variant="outline"
                     className="border-purple-200 text-purple-600 hover:bg-purple-50"
@@ -684,7 +726,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                             </Avatar>
                             <div>
                               <div className="font-medium">{student.name}</div>
-                              <div className="text-sm text-muted-foreground">{student.email}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {student.email}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -750,21 +794,23 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                         .flatMap((module) =>
                           module.lessons.filter(
                             (lesson) =>
-                              lesson.type === 'quiz' ||
-                              lesson.type === 'assignment' ||
-                              lesson.type === 'exam',
-                          ),
+                              lesson.type === "quiz" ||
+                              lesson.type === "assignment" ||
+                              lesson.type === "exam"
+                          )
                         )
                         .map((evaluation) => (
                           <th key={evaluation.id} className="p-3 bg-green-50">
                             <div className="flex flex-col">
-                              <span className="font-medium">{evaluation.title}</span>
+                              <span className="font-medium">
+                                {evaluation.title}
+                              </span>
                               <span className="text-xs text-muted-foreground">
-                                {evaluation.type === 'quiz'
-                                  ? 'Cuestionario'
-                                  : evaluation.type === 'assignment'
-                                    ? 'Tarea'
-                                    : 'Examen'}
+                                {evaluation.type === "quiz"
+                                  ? "Cuestionario"
+                                  : evaluation.type === "assignment"
+                                    ? "Tarea"
+                                    : "Examen"}
                               </span>
                             </div>
                           </th>
@@ -772,7 +818,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                       <th className="p-3 bg-green-50">
                         <div className="flex flex-col">
                           <span className="font-medium">Promedio</span>
-                          <span className="text-xs text-muted-foreground">Final</span>
+                          <span className="text-xs text-muted-foreground">
+                            Final
+                          </span>
                         </div>
                       </th>
                     </tr>
@@ -783,43 +831,53 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                       const studentAverage =
                         student.grades.length > 0
                           ? Math.round(
-                              student.grades.reduce((sum, grade) => sum + grade.grade, 0) /
-                                student.grades.length,
+                              student.grades.reduce(
+                                (sum, grade) => sum + grade.grade,
+                                0
+                              ) / student.grades.length
                             )
                           : 0
 
                       return (
-                        <tr key={student.studentId} className="border-b hover:bg-green-50/50">
+                        <tr
+                          key={student.studentId}
+                          className="border-b hover:bg-green-50/50"
+                        >
                           <td className="p-3 font-medium">{student.name}</td>
                           {modules
                             .flatMap((module) =>
                               module.lessons.filter(
                                 (lesson) =>
-                                  lesson.type === 'quiz' ||
-                                  lesson.type === 'assignment' ||
-                                  lesson.type === 'exam',
-                              ),
+                                  lesson.type === "quiz" ||
+                                  lesson.type === "assignment" ||
+                                  lesson.type === "exam"
+                              )
                             )
                             .map((evaluation) => {
                               const studentGrade = student.grades.find(
-                                (grade) => grade.evaluationId === evaluation.id,
+                                (grade) => grade.evaluationId === evaluation.id
                               )
-                              const grade = studentGrade ? studentGrade.grade : '-'
+                              const grade = studentGrade
+                                ? studentGrade.grade
+                                : "-"
                               const gradeColor =
-                                grade !== '-'
+                                grade !== "-"
                                   ? grade >= 80
-                                    ? 'text-green-600 bg-green-50'
+                                    ? "text-green-600 bg-green-50"
                                     : grade >= 60
-                                      ? 'text-amber-600 bg-amber-50'
-                                      : 'text-red-600 bg-red-50'
-                                  : ''
+                                      ? "text-amber-600 bg-amber-50"
+                                      : "text-red-600 bg-red-50"
+                                  : ""
 
                               return (
-                                <td key={`${student.studentId}-${evaluation.id}`} className="p-3">
+                                <td
+                                  key={`${student.studentId}-${evaluation.id}`}
+                                  className="p-3"
+                                >
                                   <span
                                     className={`inline-block w-12 text-center py-1 px-2 rounded-md font-medium ${gradeColor}`}
                                   >
-                                    {grade !== '-' ? `${grade}%` : '-'}
+                                    {grade !== "-" ? `${grade}%` : "-"}
                                   </span>
                                 </td>
                               )
@@ -828,10 +886,10 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                             <span
                               className={`inline-block w-12 text-center py-1 px-2 rounded-md font-medium ${
                                 studentAverage >= 80
-                                  ? 'text-green-600 bg-green-50'
+                                  ? "text-green-600 bg-green-50"
                                   : studentAverage >= 60
-                                    ? 'text-amber-600 bg-amber-50'
-                                    : 'text-red-600 bg-red-50'
+                                    ? "text-amber-600 bg-amber-50"
+                                    : "text-red-600 bg-red-50"
                               }`}
                             >
                               {studentAverage}%
@@ -851,50 +909,56 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                     .flatMap((module) =>
                       module.lessons.filter(
                         (lesson) =>
-                          lesson.type === 'quiz' ||
-                          lesson.type === 'assignment' ||
-                          lesson.type === 'exam',
-                      ),
+                          lesson.type === "quiz" ||
+                          lesson.type === "assignment" ||
+                          lesson.type === "exam"
+                      )
                     )
                     .map((evaluation) => {
                       // Calcular el promedio de esta evaluación
                       const grades = studentGrades
                         .map(
                           (student) =>
-                            student.grades.find((grade) => grade.evaluationId === evaluation.id)
-                              ?.grade || 0,
+                            student.grades.find(
+                              (grade) => grade.evaluationId === evaluation.id
+                            )?.grade || 0
                         )
                         .filter((grade) => grade > 0)
 
                       const averageGrade =
                         grades.length > 0
                           ? Math.round(
-                              grades.reduce((sum, grade) => sum + grade, 0) / grades.length,
+                              grades.reduce((sum, grade) => sum + grade, 0) /
+                                grades.length
                             )
                           : 0
 
                       return (
                         <Card key={evaluation.id} className="border-green-100">
                           <CardHeader className="pb-2">
-                            <CardTitle className="text-base">{evaluation.title}</CardTitle>
+                            <CardTitle className="text-base">
+                              {evaluation.title}
+                            </CardTitle>
                             <CardDescription>
-                              {evaluation.type === 'quiz'
-                                ? 'Cuestionario'
-                                : evaluation.type === 'assignment'
-                                  ? 'Tarea'
-                                  : 'Examen'}
+                              {evaluation.type === "quiz"
+                                ? "Cuestionario"
+                                : evaluation.type === "assignment"
+                                  ? "Tarea"
+                                  : "Examen"}
                             </CardDescription>
                           </CardHeader>
                           <CardContent>
                             <div className="flex items-center justify-between">
-                              <span className="text-sm text-muted-foreground">Promedio:</span>
+                              <span className="text-sm text-muted-foreground">
+                                Promedio:
+                              </span>
                               <span
                                 className={`inline-block text-center py-1 px-2 rounded-md font-medium ${
                                   averageGrade >= 80
-                                    ? 'text-green-600 bg-green-50'
+                                    ? "text-green-600 bg-green-50"
                                     : averageGrade >= 60
-                                      ? 'text-amber-600 bg-amber-50'
-                                      : 'text-red-600 bg-red-50'
+                                      ? "text-amber-600 bg-amber-50"
+                                      : "text-red-600 bg-red-50"
                                 }`}
                               >
                                 {averageGrade}%
@@ -917,7 +981,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 <FileText className="h-5 w-5 text-emerald-600" />
                 Detalles del curso
               </CardTitle>
-              <CardDescription>Información básica sobre tu curso</CardDescription>
+              <CardDescription>
+                Información básica sobre tu curso
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -967,7 +1033,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   />
                 </div>
                 <div className="flex justify-end">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">Guardar cambios</Button>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">
+                    Guardar cambios
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -981,7 +1049,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 <FileText className="h-5 w-5 text-amber-600" />
                 Precios
               </CardTitle>
-              <CardDescription>Configura los precios de tu curso</CardDescription>
+              <CardDescription>
+                Configura los precios de tu curso
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -996,7 +1066,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="discount-price">Precio con descuento (USD)</Label>
+                  <Label htmlFor="discount-price">
+                    Precio con descuento (USD)
+                  </Label>
                   <Input
                     id="discount-price"
                     type="number"
@@ -1006,7 +1078,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   />
                 </div>
                 <div className="flex justify-end">
-                  <Button className="bg-amber-600 hover:bg-amber-700">Guardar cambios</Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700">
+                    Guardar cambios
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -1057,7 +1131,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="certificate">Certificado de finalización</Label>
+                    <Label htmlFor="certificate">
+                      Certificado de finalización
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       Emitir certificado al completar el curso
                     </p>
@@ -1065,7 +1141,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   <Switch id="certificate" defaultChecked />
                 </div>
                 <div className="flex justify-end">
-                  <Button className="bg-rose-600 hover:bg-rose-700">Guardar cambios</Button>
+                  <Button className="bg-rose-600 hover:bg-rose-700">
+                    Guardar cambios
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -1074,11 +1152,16 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
       </Tabs>
 
       {/* Modal para añadir contenido unificado */}
-      <Dialog open={isAddContentDialogOpen} onOpenChange={setIsAddContentDialogOpen}>
+      <Dialog
+        open={isAddContentDialogOpen}
+        onOpenChange={setIsAddContentDialogOpen}
+      >
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>Añadir contenido</DialogTitle>
-            <DialogDescription>Selecciona el tipo de contenido que deseas añadir</DialogDescription>
+            <DialogDescription>
+              Selecciona el tipo de contenido que deseas añadir
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <RadioGroup
@@ -1087,18 +1170,28 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
               className="grid grid-cols-2 gap-4"
             >
               <div>
-                <RadioGroupItem value="lesson" id="lesson" className="peer sr-only" />
+                <RadioGroupItem
+                  value="lesson"
+                  id="lesson"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="lesson"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 [&:has([data-state=checked])]:border-blue-500 [&:has([data-state=checked])]:bg-blue-50"
                 >
                   <Video className="mb-2 h-6 w-6 text-blue-500" />
                   <div className="font-medium">Lección</div>
-                  <div className="text-xs text-muted-foreground">Añadir video o contenido</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir video o contenido
+                  </div>
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="quiz" id="quiz" className="peer sr-only" />
+                <RadioGroupItem
+                  value="quiz"
+                  id="quiz"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="quiz"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-amber-500 peer-data-[state=checked]:bg-amber-50 [&:has([data-state=checked])]:border-amber-500 [&:has([data-state=checked])]:bg-amber-50"
@@ -1111,30 +1204,42 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="assignment" id="assignment" className="peer sr-only" />
+                <RadioGroupItem
+                  value="assignment"
+                  id="assignment"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="assignment"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 [&:has([data-state=checked])]:border-emerald-500 [&:has([data-state=checked])]:bg-emerald-50"
                 >
                   <ClipboardList className="mb-2 h-6 w-6 text-emerald-500" />
                   <div className="font-medium">Tarea</div>
-                  <div className="text-xs text-muted-foreground">Añadir tarea práctica</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir tarea práctica
+                  </div>
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="exam" id="exam" className="peer sr-only" />
+                <RadioGroupItem
+                  value="exam"
+                  id="exam"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="exam"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rose-500 peer-data-[state=checked]:bg-rose-50 [&:has([data-state=checked])]:border-rose-500 [&:has([data-state=checked])]:bg-rose-50"
                 >
                   <FileCheck className="mb-2 h-6 w-6 text-rose-500" />
                   <div className="font-medium">Examen</div>
-                  <div className="text-xs text-muted-foreground">Añadir evaluación final</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir evaluación final
+                  </div>
                 </Label>
               </div>
             </RadioGroup>
 
-            {contentType === 'lesson' && (
+            {contentType === "lesson" && (
               <div className="space-y-4 mt-4">
                 <div className="grid gap-2">
                   <Label htmlFor="lesson-title">Título de la lección</Label>
@@ -1173,13 +1278,15 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
               </div>
             )}
 
-            {(contentType === 'quiz' || contentType === 'assignment' || contentType === 'exam') && (
+            {(contentType === "quiz" ||
+              contentType === "assignment" ||
+              contentType === "exam") && (
               <div className="space-y-4 mt-4">
                 <div className="grid gap-2">
                   <Label htmlFor="assignment-title">Título</Label>
                   <Input
                     id="assignment-title"
-                    placeholder={`Ej: ${contentType === 'quiz' ? 'Cuestionario de conceptos básicos' : contentType === 'assignment' ? 'Tarea práctica' : 'Examen final'}`}
+                    placeholder={`Ej: ${contentType === "quiz" ? "Cuestionario de conceptos básicos" : contentType === "assignment" ? "Tarea práctica" : "Examen final"}`}
                     className="border-amber-200 focus-visible:ring-amber-500"
                   />
                 </div>
@@ -1218,7 +1325,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="assignment-publish">Fecha de publicación</Label>
+                  <Label htmlFor="assignment-publish">
+                    Fecha de publicación
+                  </Label>
                   <Input
                     id="assignment-publish"
                     type="datetime-local"
@@ -1229,40 +1338,48 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddContentDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddContentDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button
               className={
-                contentType === 'lesson'
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : contentType === 'quiz'
-                    ? 'bg-amber-600 hover:bg-amber-700'
-                    : contentType === 'assignment'
-                      ? 'bg-emerald-600 hover:bg-emerald-700'
-                      : 'bg-rose-600 hover:bg-rose-700'
+                contentType === "lesson"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : contentType === "quiz"
+                    ? "bg-amber-600 hover:bg-amber-700"
+                    : contentType === "assignment"
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-rose-600 hover:bg-rose-700"
               }
               onClick={() => setIsAddContentDialogOpen(false)}
             >
-              Añadir{' '}
-              {contentType === 'lesson'
-                ? 'lección'
-                : contentType === 'quiz'
-                  ? 'cuestionario'
-                  : contentType === 'assignment'
-                    ? 'tarea'
-                    : 'examen'}
+              Añadir{" "}
+              {contentType === "lesson"
+                ? "lección"
+                : contentType === "quiz"
+                  ? "cuestionario"
+                  : contentType === "assignment"
+                    ? "tarea"
+                    : "examen"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Modal para añadir módulo */}
-      <Dialog open={isAddModuleDialogOpen} onOpenChange={setIsAddModuleDialogOpen}>
+      <Dialog
+        open={isAddModuleDialogOpen}
+        onOpenChange={setIsAddModuleDialogOpen}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Añadir nuevo módulo</DialogTitle>
-            <DialogDescription>Crea un nuevo módulo para tu curso</DialogDescription>
+            <DialogDescription>
+              Crea un nuevo módulo para tu curso
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -1283,7 +1400,10 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddModuleDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddModuleDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button
@@ -1297,11 +1417,16 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
       </Dialog>
 
       {/* Modal para añadir estudiante */}
-      <Dialog open={isAddStudentDialogOpen} onOpenChange={setIsAddStudentDialogOpen}>
+      <Dialog
+        open={isAddStudentDialogOpen}
+        onOpenChange={setIsAddStudentDialogOpen}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Añadir estudiante</DialogTitle>
-            <DialogDescription>Añade un nuevo estudiante a este curso</DialogDescription>
+            <DialogDescription>
+              Añade un nuevo estudiante a este curso
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -1342,7 +1467,10 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddStudentDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddStudentDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button
@@ -1356,11 +1484,16 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
       </Dialog>
 
       {/* Modal para ver detalles del estudiante */}
-      <Dialog open={isStudentDetailsDialogOpen} onOpenChange={setIsStudentDetailsDialogOpen}>
+      <Dialog
+        open={isStudentDetailsDialogOpen}
+        onOpenChange={setIsStudentDetailsDialogOpen}
+      >
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
             <DialogTitle>Detalles del estudiante</DialogTitle>
-            <DialogDescription>Información detallada y progreso del estudiante</DialogDescription>
+            <DialogDescription>
+              Información detallada y progreso del estudiante
+            </DialogDescription>
           </DialogHeader>
           {selectedStudent && (
             <div className="grid gap-6 py-4">
@@ -1375,15 +1508,22 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                 </Avatar>
                 <div>
                   <h3 className="text-xl font-bold">{selectedStudent.name}</h3>
-                  <p className="text-muted-foreground">{selectedStudent.email}</p>
+                  <p className="text-muted-foreground">
+                    {selectedStudent.email}
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h4 className="font-medium">Progreso del curso</h4>
                 <div className="flex items-center gap-2">
-                  <Progress value={selectedStudent.progress} className="h-2 flex-1" />
-                  <span className="font-medium">{selectedStudent.progress}%</span>
+                  <Progress
+                    value={selectedStudent.progress}
+                    className="h-2 flex-1"
+                  />
+                  <span className="font-medium">
+                    {selectedStudent.progress}%
+                  </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Última actividad: {selectedStudent.lastActive}
@@ -1401,7 +1541,11 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                       <div>
                         <p className="font-medium">{module.title}</p>
                         <p className="text-sm text-muted-foreground">
-                          {index === 0 ? 'Completado' : index === 1 ? 'En progreso' : 'No iniciado'}
+                          {index === 0
+                            ? "Completado"
+                            : index === 1
+                              ? "En progreso"
+                              : "No iniciado"}
                         </p>
                       </div>
                       <Progress
@@ -1434,7 +1578,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                       </td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2">Tarea práctica: Implementación básica</td>
+                      <td className="py-2">
+                        Tarea práctica: Implementación básica
+                      </td>
                       <td className="py-2">Tarea</td>
                       <td className="py-2">78%</td>
                       <td className="py-2">
@@ -1455,10 +1601,15 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsStudentDetailsDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsStudentDetailsDialogOpen(false)}
+            >
               Cerrar
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700">Enviar mensaje</Button>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Enviar mensaje
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1468,10 +1619,16 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>Editar lección</DialogTitle>
-            <DialogDescription>Modifica los detalles de esta lección</DialogDescription>
+            <DialogDescription>
+              Modifica los detalles de esta lección
+            </DialogDescription>
           </DialogHeader>
 
-          <Tabs value={lessonEditTab} onValueChange={setLessonEditTab} className="mt-2">
+          <Tabs
+            value={lessonEditTab}
+            onValueChange={setLessonEditTab}
+            className="mt-2"
+          >
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="details">Detalles</TabsTrigger>
               <TabsTrigger value="resources">Recursos</TabsTrigger>
@@ -1528,7 +1685,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   <Button
                     variant="outline"
                     className="border-blue-200 text-blue-600 hover:bg-blue-50"
-                    onClick={() => handleAddResource(newResourceName, editingLesson)}
+                    onClick={() =>
+                      handleAddResource(newResourceName, editingLesson)
+                    }
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Añadir
@@ -1555,7 +1714,8 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
               <div className="border rounded-md p-4 mt-4">
                 <h4 className="font-medium mb-2">Recursos actuales</h4>
-                {editingLesson?.resources && editingLesson.resources.length > 0 ? (
+                {editingLesson?.resources &&
+                editingLesson.resources.length > 0 ? (
                   <div className="space-y-2">
                     {editingLesson.resources.map((resource) => (
                       <div
@@ -1578,7 +1738,12 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                             variant="ghost"
                             size="sm"
                             className="h-8 text-red-600 hover:text-red-800 hover:bg-red-100"
-                            onClick={() => handleDeleteResource(resource.id, editingLesson.id)}
+                            onClick={() =>
+                              handleDeleteResource(
+                                resource.id,
+                                editingLesson.id
+                              )
+                            }
                           >
                             <Trash className="h-3 w-3" />
                           </Button>
@@ -1587,14 +1752,19 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No hay recursos para esta lección</p>
+                  <p className="text-sm text-muted-foreground">
+                    No hay recursos para esta lección
+                  </p>
                 )}
               </div>
             </TabsContent>
           </Tabs>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsLessonDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsLessonDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button
@@ -1608,20 +1778,29 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
       </Dialog>
 
       {/* Diálogo para editar tarea/examen con pestaña de recursos */}
-      <Dialog open={isAssignmentDialogOpen} onOpenChange={setIsAssignmentDialogOpen}>
+      <Dialog
+        open={isAssignmentDialogOpen}
+        onOpenChange={setIsAssignmentDialogOpen}
+      >
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>
-              {editingAssignment?.type === 'quiz'
-                ? 'Editar cuestionario'
-                : editingAssignment?.type === 'assignment'
-                  ? 'Editar tarea'
-                  : 'Editar examen'}
+              {editingAssignment?.type === "quiz"
+                ? "Editar cuestionario"
+                : editingAssignment?.type === "assignment"
+                  ? "Editar tarea"
+                  : "Editar examen"}
             </DialogTitle>
-            <DialogDescription>Configura los detalles y tiempos</DialogDescription>
+            <DialogDescription>
+              Configura los detalles y tiempos
+            </DialogDescription>
           </DialogHeader>
 
-          <Tabs value={assignmentEditTab} onValueChange={setAssignmentEditTab} className="mt-2">
+          <Tabs
+            value={assignmentEditTab}
+            onValueChange={setAssignmentEditTab}
+            className="mt-2"
+          >
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="details">Detalles</TabsTrigger>
               <TabsTrigger value="resources">Recursos</TabsTrigger>
@@ -1683,8 +1862,12 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="assignment-attempts">Intentos múltiples</Label>
-                  <p className="text-sm text-muted-foreground">Permitir múltiples intentos</p>
+                  <Label htmlFor="assignment-attempts">
+                    Intentos múltiples
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Permitir múltiples intentos
+                  </p>
                 </div>
                 <Switch id="assignment-attempts" />
               </div>
@@ -1692,7 +1875,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
             <TabsContent value="resources" className="space-y-4 pt-4">
               <div className="grid gap-2">
-                <Label htmlFor="assignment-resource-name">Nombre del recurso</Label>
+                <Label htmlFor="assignment-resource-name">
+                  Nombre del recurso
+                </Label>
                 <div className="flex items-center gap-2">
                   <Input
                     id="assignment-resource-name"
@@ -1704,7 +1889,9 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                   <Button
                     variant="outline"
                     className="border-amber-200 text-amber-600 hover:bg-amber-50"
-                    onClick={() => handleAddResource(newResourceName, editingAssignment)}
+                    onClick={() =>
+                      handleAddResource(newResourceName, editingAssignment)
+                    }
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Añadir
@@ -1731,7 +1918,8 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
 
               <div className="border rounded-md p-4 mt-4">
                 <h4 className="font-medium mb-2">Recursos actuales</h4>
-                {editingAssignment?.resources && editingAssignment.resources.length > 0 ? (
+                {editingAssignment?.resources &&
+                editingAssignment.resources.length > 0 ? (
                   <div className="space-y-2">
                     {editingAssignment.resources.map((resource) => (
                       <div
@@ -1754,7 +1942,12 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
                             variant="ghost"
                             size="sm"
                             className="h-8 text-red-600 hover:text-red-800 hover:bg-red-100"
-                            onClick={() => handleDeleteResource(resource.id, editingAssignment.id)}
+                            onClick={() =>
+                              handleDeleteResource(
+                                resource.id,
+                                editingAssignment.id
+                              )
+                            }
                           >
                             <Trash className="h-3 w-3" />
                           </Button>
@@ -1772,7 +1965,10 @@ export default function CourseEditPage({ params }: { params: { courseId: string 
           </Tabs>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAssignmentDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAssignmentDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button

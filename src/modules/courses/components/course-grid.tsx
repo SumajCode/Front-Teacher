@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { BookOpen, Users } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { getStatusBadge } from '@/modules/courses/utils/course-helpers'
-import type { Course } from '@/modules/courses/types'
+import Link from "next/link"
+import Image from "next/image"
+import { BookOpen, Users } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { getStatusBadge } from "@/modules/courses/utils/course-helpers"
+import type { Course } from "@/modules/courses/types"
 
 interface CourseGridProps {
   courses: Course[]
@@ -22,11 +22,13 @@ export function CourseGrid({ courses }: CourseGridProps) {
             <Image
               width={250}
               height={150}
-              src={course.image || '/placeholder.svg'}
+              src={course.image || "/placeholder.svg"}
               alt={course.title}
               className="w-full h-40 object-cover"
             />
-            <div className="absolute top-2 right-2">{getStatusBadge(course.status)}</div>
+            <div className="absolute top-2 right-2">
+              {getStatusBadge(course.status)}
+            </div>
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white">
               <h3 className="font-bold text-lg truncate">{course.title}</h3>
             </div>

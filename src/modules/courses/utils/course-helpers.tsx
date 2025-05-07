@@ -1,10 +1,12 @@
-import { Badge } from '@/components/ui/badge'
+import { Badge } from "@/components/ui/badge"
 
 export function getStatusBadge(status: string) {
   switch (status) {
-    case 'published':
-      return <Badge className="bg-green-500 hover:bg-green-600">Publicado</Badge>
-    case 'draft':
+    case "published":
+      return (
+        <Badge className="bg-green-500 hover:bg-green-600">Publicado</Badge>
+      )
+    case "draft":
       return (
         <Badge
           variant="outline"
@@ -13,7 +15,7 @@ export function getStatusBadge(status: string) {
           Borrador
         </Badge>
       )
-    case 'archived':
+    case "archived":
       return (
         <Badge
           variant="outline"
@@ -29,17 +31,17 @@ export function getStatusBadge(status: string) {
 
 export function getColorClass(color: string) {
   switch (color) {
-    case 'blue':
-      return 'from-blue-500 to-blue-700'
-    case 'amber':
-      return 'from-amber-500 to-amber-700'
-    case 'cyan':
-      return 'from-cyan-500 to-cyan-700'
-    case 'green':
-      return 'from-green-500 to-green-700'
-    case 'purple':
-      return 'from-purple-500 to-purple-700'
+    case "blue":
+      return "from-blue-500 to-blue-700"
+    case "amber":
+      return "from-amber-500 to-amber-700"
+    case "cyan":
+      return "from-cyan-500 to-cyan-700"
+    case "green":
+      return "from-green-500 to-green-700"
+    case "purple":
+      return "from-purple-500 to-purple-700"
     default:
-      return 'from-blue-500 to-blue-700'
+      return "from-blue-500 to-blue-700"
   }
 }

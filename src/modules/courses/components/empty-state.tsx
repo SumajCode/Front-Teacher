@@ -1,50 +1,50 @@
-'use client'
+"use client"
 
-import { BookOpen, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { BookOpen, Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface EmptyStateProps {
-  type: 'all' | 'published' | 'draft' | 'archived'
+  type: "all" | "published" | "draft" | "archived"
   onCreateCourse: () => void
 }
 
 export function EmptyState({ type, onCreateCourse }: EmptyStateProps) {
   const getEmptyStateContent = () => {
     switch (type) {
-      case 'all':
+      case "all":
         return {
           icon: <BookOpen className="h-6 w-6 text-blue-600" />,
-          title: 'No se encontraron cursos',
-          description: 'No hay cursos que coincidan con tu búsqueda.',
-          bgColor: 'bg-blue-100',
+          title: "No se encontraron cursos",
+          description: "No hay cursos que coincidan con tu búsqueda.",
+          bgColor: "bg-blue-100",
         }
-      case 'published':
+      case "published":
         return {
           icon: <BookOpen className="h-6 w-6 text-green-600" />,
-          title: 'No hay cursos publicados',
-          description: 'Publica tus cursos para que aparezcan aquí.',
-          bgColor: 'bg-green-100',
+          title: "No hay cursos publicados",
+          description: "Publica tus cursos para que aparezcan aquí.",
+          bgColor: "bg-green-100",
         }
-      case 'draft':
+      case "draft":
         return {
           icon: <BookOpen className="h-6 w-6 text-amber-600" />,
-          title: 'No hay borradores',
-          description: 'Crea un nuevo curso para comenzar.',
-          bgColor: 'bg-amber-100',
+          title: "No hay borradores",
+          description: "Crea un nuevo curso para comenzar.",
+          bgColor: "bg-amber-100",
         }
-      case 'archived':
+      case "archived":
         return {
           icon: <BookOpen className="h-6 w-6 text-gray-600" />,
-          title: 'No hay cursos archivados',
-          description: 'Los cursos archivados aparecerán aquí.',
-          bgColor: 'bg-gray-100',
+          title: "No hay cursos archivados",
+          description: "Los cursos archivados aparecerán aquí.",
+          bgColor: "bg-gray-100",
         }
       default:
         return {
           icon: <BookOpen className="h-6 w-6 text-blue-600" />,
-          title: 'No se encontraron cursos',
-          description: 'No hay cursos que coincidan con tu búsqueda.',
-          bgColor: 'bg-blue-100',
+          title: "No se encontraron cursos",
+          description: "No hay cursos que coincidan con tu búsqueda.",
+          bgColor: "bg-blue-100",
         }
     }
   }
@@ -53,10 +53,15 @@ export function EmptyState({ type, onCreateCourse }: EmptyStateProps) {
 
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className={`rounded-full ${content.bgColor} p-3 mb-4`}>{content.icon}</div>
+      <div className={`rounded-full ${content.bgColor} p-3 mb-4`}>
+        {content.icon}
+      </div>
       <h3 className="text-lg font-medium">{content.title}</h3>
       <p className="text-muted-foreground mt-1 mb-4">{content.description}</p>
-      <Button className="bg-blue-600 hover:bg-blue-700" onClick={onCreateCourse}>
+      <Button
+        className="bg-blue-600 hover:bg-blue-700"
+        onClick={onCreateCourse}
+      >
         <Plus className="mr-2 h-4 w-4" />
         Crear nuevo curso
       </Button>

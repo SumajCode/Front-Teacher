@@ -1,7 +1,7 @@
 export interface Course {
   id: string
   title: string
-  status: 'published' | 'draft' | 'archived'
+  status: "published" | "draft" | "archived"
   students: number
   rating: number
   revenue: string

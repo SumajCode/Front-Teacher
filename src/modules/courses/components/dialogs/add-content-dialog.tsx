@@ -1,5 +1,5 @@
-'use client'
-import { Button } from '@/components/ui/button'
+"use client"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -7,13 +7,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { CheckSquare, ClipboardList, FileCheck, Plus, Upload, Video } from 'lucide-react'
-import { useResources } from '@/modules/courses/hooks/use-resources'
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import {
+  CheckSquare,
+  ClipboardList,
+  FileCheck,
+  Plus,
+  Upload,
+  Video,
+} from "lucide-react"
+import { useResources } from "@/modules/courses/hooks/use-resources"
 
 interface AddContentDialogProps {
   open: boolean
@@ -42,7 +49,9 @@ export function AddContentDialog({
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Añadir contenido</DialogTitle>
-          <DialogDescription>Selecciona el tipo de contenido que deseas añadir</DialogDescription>
+          <DialogDescription>
+            Selecciona el tipo de contenido que deseas añadir
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <RadioGroup
@@ -51,14 +60,20 @@ export function AddContentDialog({
             className="grid grid-cols-2 gap-4"
           >
             <div>
-              <RadioGroupItem value="lesson" id="lesson" className="peer sr-only" />
+              <RadioGroupItem
+                value="lesson"
+                id="lesson"
+                className="peer sr-only"
+              />
               <Label
                 htmlFor="lesson"
                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 [&:has([data-state=checked])]:border-blue-500 [&:has([data-state=checked])]:bg-blue-50"
               >
                 <Video className="mb-2 h-6 w-6 text-blue-500" />
                 <div className="font-medium">Lección</div>
-                <div className="text-xs text-muted-foreground">Añadir video o contenido</div>
+                <div className="text-xs text-muted-foreground">
+                  Añadir video o contenido
+                </div>
               </Label>
             </div>
             <div>
@@ -69,18 +84,26 @@ export function AddContentDialog({
               >
                 <CheckSquare className="mb-2 h-6 w-6 text-amber-500" />
                 <div className="font-medium">Cuestionario</div>
-                <div className="text-xs text-muted-foreground">Añadir preguntas de evaluación</div>
+                <div className="text-xs text-muted-foreground">
+                  Añadir preguntas de evaluación
+                </div>
               </Label>
             </div>
             <div>
-              <RadioGroupItem value="assignment" id="assignment" className="peer sr-only" />
+              <RadioGroupItem
+                value="assignment"
+                id="assignment"
+                className="peer sr-only"
+              />
               <Label
                 htmlFor="assignment"
                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 [&:has([data-state=checked])]:border-emerald-500 [&:has([data-state=checked])]:bg-emerald-50"
               >
                 <ClipboardList className="mb-2 h-6 w-6 text-emerald-500" />
                 <div className="font-medium">Tarea</div>
-                <div className="text-xs text-muted-foreground">Añadir tarea práctica</div>
+                <div className="text-xs text-muted-foreground">
+                  Añadir tarea práctica
+                </div>
               </Label>
             </div>
             <div>
@@ -91,12 +114,14 @@ export function AddContentDialog({
               >
                 <FileCheck className="mb-2 h-6 w-6 text-rose-500" />
                 <div className="font-medium">Examen</div>
-                <div className="text-xs text-muted-foreground">Añadir evaluación final</div>
+                <div className="text-xs text-muted-foreground">
+                  Añadir evaluación final
+                </div>
               </Label>
             </div>
           </RadioGroup>
 
-          {contentType === 'lesson' && (
+          {contentType === "lesson" && (
             <div className="space-y-4 mt-4">
               <div className="grid gap-2">
                 <Label htmlFor="lesson-title">Título de la lección</Label>
@@ -135,13 +160,15 @@ export function AddContentDialog({
             </div>
           )}
 
-          {(contentType === 'quiz' || contentType === 'assignment' || contentType === 'exam') && (
+          {(contentType === "quiz" ||
+            contentType === "assignment" ||
+            contentType === "exam") && (
             <div className="space-y-4 mt-4">
               <div className="grid gap-2">
                 <Label htmlFor="assignment-title">Título</Label>
                 <Input
                   id="assignment-title"
-                  placeholder={`Ej: ${contentType === 'quiz' ? 'Cuestionario de conceptos básicos' : contentType === 'assignment' ? 'Tarea práctica' : 'Examen final'}`}
+                  placeholder={`Ej: ${contentType === "quiz" ? "Cuestionario de conceptos básicos" : contentType === "assignment" ? "Tarea práctica" : "Examen final"}`}
                   className="border-amber-200 focus-visible:ring-amber-500"
                 />
               </div>
@@ -232,7 +259,9 @@ export function AddContentDialog({
                 {/* Lista de recursos añadidos */}
                 {resources.length > 0 && (
                   <div className="mt-4 border rounded-md p-3">
-                    <h4 className="text-sm font-medium mb-2">Recursos añadidos</h4>
+                    <h4 className="text-sm font-medium mb-2">
+                      Recursos añadidos
+                    </h4>
                     <div className="space-y-2">
                       {resources.map((resource) => (
                         <div
@@ -282,24 +311,24 @@ export function AddContentDialog({
           </Button>
           <Button
             className={
-              contentType === 'lesson'
-                ? 'bg-blue-600 hover:bg-blue-700'
-                : contentType === 'quiz'
-                  ? 'bg-amber-600 hover:bg-amber-700'
-                  : contentType === 'assignment'
-                    ? 'bg-emerald-600 hover:bg-emerald-700'
-                    : 'bg-rose-600 hover:bg-rose-700'
+              contentType === "lesson"
+                ? "bg-blue-600 hover:bg-blue-700"
+                : contentType === "quiz"
+                  ? "bg-amber-600 hover:bg-amber-700"
+                  : contentType === "assignment"
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-rose-600 hover:bg-rose-700"
             }
             onClick={() => onOpenChange(false)}
           >
-            Añadir{' '}
-            {contentType === 'lesson'
-              ? 'lección'
-              : contentType === 'quiz'
-                ? 'cuestionario'
-                : contentType === 'assignment'
-                  ? 'tarea'
-                  : 'examen'}
+            Añadir{" "}
+            {contentType === "lesson"
+              ? "lección"
+              : contentType === "quiz"
+                ? "cuestionario"
+                : contentType === "assignment"
+                  ? "tarea"
+                  : "examen"}
           </Button>
         </DialogFooter>
       </DialogContent>

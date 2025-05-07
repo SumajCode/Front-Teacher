@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,32 +9,35 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select"
 
 interface CreateCourseDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function CreateCourseDialog({ open, onOpenChange }: CreateCourseDialogProps) {
+export function CreateCourseDialog({
+  open,
+  onOpenChange,
+}: CreateCourseDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-xl">Crear nuevo curso</DialogTitle>
           <DialogDescription>
-            Completa la información básica para crear tu nuevo curso. Podrás añadir más detalles
-            después.
+            Completa la información básica para crear tu nuevo curso. Podrás
+            añadir más detalles después.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
