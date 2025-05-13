@@ -1,26 +1,19 @@
 import { Badge } from "@/components/ui/badge"
+import { BookOpen, CheckSquare, ClipboardList, FileCheck, FileText, File, Video } from "lucide-react"
 
 export function getStatusBadge(status: string) {
   switch (status) {
     case "published":
-      return (
-        <Badge className="bg-green-500 hover:bg-green-600">Publicado</Badge>
-      )
+      return <Badge className="bg-green-500 hover:bg-green-600">Publicado</Badge>
     case "draft":
       return (
-        <Badge
-          variant="outline"
-          className="border-amber-500 text-amber-600 bg-amber-50 hover:bg-amber-100"
-        >
+        <Badge variant="outline" className="border-amber-500 text-amber-600 bg-amber-50 hover:bg-amber-100">
           Borrador
         </Badge>
       )
     case "archived":
       return (
-        <Badge
-          variant="outline"
-          className="border-gray-500 text-gray-600 bg-gray-50 hover:bg-gray-100"
-        >
+        <Badge variant="outline" className="border-gray-500 text-gray-600 bg-gray-50 hover:bg-gray-100">
           Archivado
         </Badge>
       )
@@ -43,5 +36,50 @@ export function getColorClass(color: string) {
       return "from-purple-500 to-purple-700"
     default:
       return "from-blue-500 to-blue-700"
+  }
+}
+
+export function getLessonIcon(type: string) {
+  switch (type) {
+    case "video":
+      return <Video className="h-4 w-4 text-blue-600" />
+    case "quiz":
+      return <CheckSquare className="h-4 w-4 text-amber-600" />
+    case "assignment":
+      return <ClipboardList className="h-4 w-4 text-emerald-600" />
+    case "exam":
+      return <FileCheck className="h-4 w-4 text-rose-600" />
+    default:
+      return <BookOpen className="h-4 w-4 text-gray-600" />
+  }
+}
+
+export function getResourceIcon(type: string) {
+  switch (type) {
+    case "pdf":
+      return (
+        <div className="p-1 rounded-md bg-rose-100 text-rose-600">
+          <FileText className="h-4 w-4" />
+        </div>
+      )
+    case "doc":
+    case "docx":
+      return (
+        <div className="p-1 rounded-md bg-blue-100 text-blue-600">
+          <FileText className="h-4 w-4" />
+        </div>
+      )
+    case "zip":
+      return (
+        <div className="p-1 rounded-md bg-amber-100 text-amber-600">
+          <File className="h-4 w-4" />
+        </div>
+      )
+    default:
+      return (
+        <div className="p-1 rounded-md bg-gray-100 text-gray-600">
+          <File className="h-4 w-4" />
+        </div>
+      )
   }
 }

@@ -9,8 +9,7 @@ export const courses: Course[] = [
     rating: 4.8,
     revenue: "$12,234",
     lastUpdated: "2023-10-15",
-    description:
-      "Aprende HTML, CSS, JavaScript, PHP y más en este curso completo de desarrollo web.",
+    description: "Aprende HTML, CSS, JavaScript, PHP y más en este curso completo de desarrollo web.",
     image: "/placeholder.svg?height=150&width=250&text=Desarrollo+Web",
     modules: 12,
     lessons: 78,
@@ -25,8 +24,7 @@ export const courses: Course[] = [
     rating: 4.7,
     revenue: "$8,120",
     lastUpdated: "2023-11-02",
-    description:
-      "Domina JavaScript moderno, ES6+, promesas, async/await y más.",
+    description: "Domina JavaScript moderno, ES6+, promesas, async/await y más.",
     image: "/placeholder.svg?height=150&width=250&text=JavaScript",
     modules: 8,
     lessons: 52,
@@ -41,8 +39,7 @@ export const courses: Course[] = [
     rating: 4.9,
     revenue: "$7,340",
     lastUpdated: "2023-09-28",
-    description:
-      "Aprende React.js desde los fundamentos hasta aplicaciones avanzadas.",
+    description: "Aprende React.js desde los fundamentos hasta aplicaciones avanzadas.",
     image: "/placeholder.svg?height=150&width=250&text=React",
     modules: 10,
     lessons: 64,
@@ -57,8 +54,7 @@ export const courses: Course[] = [
     rating: 4.6,
     revenue: "$5,890",
     lastUpdated: "2023-12-05",
-    description:
-      "Introducción completa a la programación con Python para principiantes.",
+    description: "Introducción completa a la programación con Python para principiantes.",
     image: "/placeholder.svg?height=150&width=250&text=Python",
     modules: 9,
     lessons: 58,
@@ -73,8 +69,7 @@ export const courses: Course[] = [
     rating: 0,
     revenue: "$0",
     lastUpdated: "2024-01-10",
-    description:
-      "Aprende técnicas avanzadas de diseño UX/UI para crear interfaces excepcionales.",
+    description: "Aprende técnicas avanzadas de diseño UX/UI para crear interfaces excepcionales.",
     image: "/placeholder.svg?height=150&width=250&text=UX/UI+Design",
     modules: 7,
     lessons: 42,
