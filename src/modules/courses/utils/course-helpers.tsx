@@ -1,3 +1,4 @@
+import React from "react"
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, CheckSquare, ClipboardList, FileCheck, FileText, File, Video } from "lucide-react"
 

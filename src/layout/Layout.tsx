@@ -1,12 +1,11 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import React, { ReactNode } from "react"
 
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-
-import { ReactNode } from "react"
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
