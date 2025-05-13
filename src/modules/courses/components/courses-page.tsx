@@ -5,33 +5,24 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 import { CourseGrid } from "@/modules/courses/components/course-grid"
 import { CourseTable } from "@/modules/courses/components/course-table"
-import { CreateCourseDialog } from "@/modules/courses/components/dialogs/create-course-dialog"
-import { AddContentDialog } from "@/modules/courses/components/dialogs/add-content-dialog"
+
 import { EmptyState } from "@/modules/courses/components/empty-state"
 import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters"
 import { courses } from "@/modules/courses/data/courses"
 import { Plus, Search } from "lucide-react"
+import { CreateCourseDialog } from "@/modules/courses/components/create-course/create-course-dialog"
 
 export function CoursesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
-  const [isCreateCourseDialogOpen, setIsCreateCourseDialogOpen] =
-    useState(false)
-  const [isAddContentDialogOpen, setIsAddContentDialogOpen] = useState(false)
-  const [contentType, setContentType] = useState<string>("lesson")
+  const [isCreateCourseDialogOpen, setIsCreateCourseDialogOpen] = useState(false)
+
   const [currentTab, setCurrentTab] = useState("all")
 
-  const { searchQuery, setSearchQuery, sortBy, setSortBy, filteredCourses } =
-    useCourseFilters(courses, currentTab)
+  const { searchQuery, setSearchQuery, sortBy, setSortBy, filteredCourses } = useCourseFilters(courses, currentTab)
 
   return (
     <div className="space-y-6">
@@ -40,10 +31,9 @@ export function CoursesPage() {
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Mis Cursos
           </h1>
-          <p className="text-muted-foreground">
-            Gestiona tus cursos y contenido educativo
-          </p>
+          <p className="text-muted-foreground">Gestiona tus cursos y contenido educativo</p>
         </div>
+
         <Button
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md"
           onClick={() => setIsCreateCourseDialogOpen(true)}
@@ -92,9 +82,7 @@ export function CoursesPage() {
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="icon"
-                  className={
-                    viewMode === "grid" ? "bg-blue-600 hover:bg-blue-700" : ""
-                  }
+                  className={viewMode === "grid" ? "bg-blue-600 hover:bg-blue-700" : ""}
                   onClick={() => setViewMode("grid")}
                 >
                   <svg
@@ -118,9 +106,7 @@ export function CoursesPage() {
                 <Button
                   variant={viewMode === "table" ? "default" : "outline"}
                   size="icon"
-                  className={
-                    viewMode === "table" ? "bg-blue-600 hover:bg-blue-700" : ""
-                  }
+                  className={viewMode === "table" ? "bg-blue-600 hover:bg-blue-700" : ""}
                   onClick={() => setViewMode("table")}
                 >
                   <svg
@@ -165,105 +151,46 @@ export function CoursesPage() {
           </div>
 
           <TabsContent value="all" className="mt-4 space-y-4">
-            {viewMode === "grid" ? (
-              <CourseGrid courses={filteredCourses} />
-            ) : (
-              <CourseTable courses={filteredCourses} />
-            )}
+            {viewMode === "grid" ? <CourseGrid courses={filteredCourses} /> : <CourseTable courses={filteredCourses} />}
 
-            {filteredCourses.length === 0 && (
-              <EmptyState
-                type="all"
-                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
-              />
-            )}
+            {filteredCourses.length === 0 && <EmptyState type="all" />}
           </TabsContent>
 
           <TabsContent value="published" className="mt-4 space-y-4">
             {viewMode === "grid" ? (
-              <CourseGrid
-                courses={filteredCourses.filter(
-                  (course) => course.status === "published"
-                )}
-              />
+              <CourseGrid courses={filteredCourses.filter((course) => course.status === "published")} />
             ) : (
-              <CourseTable
-                courses={filteredCourses.filter(
-                  (course) => course.status === "published"
-                )}
-              />
+              <CourseTable courses={filteredCourses.filter((course) => course.status === "published")} />
             )}
 
-            {filteredCourses.filter((course) => course.status === "published")
-              .length === 0 && (
-              <EmptyState
-                type="published"
-                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
-              />
+            {filteredCourses.filter((course) => course.status === "published").length === 0 && (
+              <EmptyState type="published" />
             )}
           </TabsContent>
 
           <TabsContent value="draft" className="mt-4 space-y-4">
             {viewMode === "grid" ? (
-              <CourseGrid
-                courses={filteredCourses.filter(
-                  (course) => course.status === "draft"
-                )}
-              />
+              <CourseGrid courses={filteredCourses.filter((course) => course.status === "draft")} />
             ) : (
-              <CourseTable
-                courses={filteredCourses.filter(
-                  (course) => course.status === "draft"
-                )}
-              />
+              <CourseTable courses={filteredCourses.filter((course) => course.status === "draft")} />
             )}
 
-            {filteredCourses.filter((course) => course.status === "draft")
-              .length === 0 && (
-              <EmptyState
-                type="draft"
-                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
-              />
-            )}
+            {filteredCourses.filter((course) => course.status === "draft").length === 0 && <EmptyState type="draft" />}
           </TabsContent>
           <TabsContent value="archived" className="mt-4 space-y-4">
             {viewMode === "grid" ? (
-              <CourseGrid
-                courses={filteredCourses.filter(
-                  (course) => course.status === "archived"
-                )}
-              />
+              <CourseGrid courses={filteredCourses.filter((course) => course.status === "archived")} />
             ) : (
-              <CourseTable
-                courses={filteredCourses.filter(
-                  (course) => course.status === "archived"
-                )}
-              />
+              <CourseTable courses={filteredCourses.filter((course) => course.status === "archived")} />
             )}
 
-            {filteredCourses.filter((course) => course.status === "archived")
-              .length === 0 && (
-              <EmptyState
-                type="archived"
-                onCreateCourse={() => setIsCreateCourseDialogOpen(true)}
-              />
+            {filteredCourses.filter((course) => course.status === "archived").length === 0 && (
+              <EmptyState type="archived" />
             )}
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* Modals */}
-      <CreateCourseDialog
-        open={isCreateCourseDialogOpen}
-        onOpenChange={setIsCreateCourseDialogOpen}
-      />
-
-      <AddContentDialog
-        open={isAddContentDialogOpen}
-        onOpenChange={setIsAddContentDialogOpen}
-        contentType={contentType}
-        setContentType={setContentType}
-      />
+      <CreateCourseDialog open={isCreateCourseDialogOpen} onOpenChange={setIsCreateCourseDialogOpen} />
     </div>
   )
 }
