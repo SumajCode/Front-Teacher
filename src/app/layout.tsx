@@ -1,3 +1,4 @@
+import type React from "react"
 import Layout from "@/layout/Layout"
 import "./globals.css"
 
@@ -14,3 +15,7 @@ export default function RootLayout({
     </html>
   )
 }
+
+// export const metadata = {
+
+//     };
