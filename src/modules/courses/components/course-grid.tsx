@@ -16,13 +16,13 @@ export function CourseGrid({ courses }: CourseGridProps) {
       {courses.map((course) => (
         <Card
           key={course.id}
-          className="overflow-hidden transition-all duration-300 hover:shadow-lg border-t-4 border-t-blue-500 group"
+          className="overflow-hidden transition-all duration-300 hover:shadow-lg border-t-4 border-t-purple-800 group"
         >
           <div className="relative">
             <Image
               width={250}
               height={150}
-              src={course.image || "/placeholder.svg"}
+              src={course.image || "/default.png"}
               alt={course.title}
               className="w-full h-40 object-cover"
             />
@@ -49,7 +49,7 @@ export function CourseGrid({ courses }: CourseGridProps) {
             </div>
             <div className="flex items-center justify-end">
               <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                <Link href={`/courses/${course.id}`}>Editar</Link>
+                <Link href={`/courses/${course.id}`}>Ver</Link>
               </Button>
             </div>
           </CardContent>
