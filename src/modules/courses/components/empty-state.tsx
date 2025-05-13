@@ -1,14 +1,12 @@
 "use client"
 
-import { BookOpen, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { BookOpen } from "lucide-react"
 
 interface EmptyStateProps {
   type: "all" | "published" | "draft" | "archived"
-  onCreateCourse: () => void
 }
 
-export function EmptyState({ type, onCreateCourse }: EmptyStateProps) {
+export function EmptyState({ type }: EmptyStateProps) {
   const getEmptyStateContent = () => {
     switch (type) {
       case "all":
@@ -53,18 +51,9 @@ export function EmptyState({ type, onCreateCourse }: EmptyStateProps) {
 
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className={`rounded-full ${content.bgColor} p-3 mb-4`}>
-        {content.icon}
-      </div>
+      <div className={`rounded-full ${content.bgColor} p-3 mb-4`}>{content.icon}</div>
       <h3 className="text-lg font-medium">{content.title}</h3>
       <p className="text-muted-foreground mt-1 mb-4">{content.description}</p>
-      <Button
-        className="bg-blue-600 hover:bg-blue-700"
-        onClick={onCreateCourse}
-      >
-        <Plus className="mr-2 h-4 w-4" />
-        Crear nuevo curso
-      </Button>
     </div>
   )
 }
