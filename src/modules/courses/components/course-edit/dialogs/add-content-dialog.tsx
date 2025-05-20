@@ -22,7 +22,6 @@ import {
   Video,
   ChevronRight,
   ChevronLeft,
-  Plus,
   File,
   FileText,
   Trash,
@@ -55,7 +54,9 @@ export function AddContentDialog({
   const [openDate, setOpenDate] = useState("")
   const [closeDate, setCloseDate] = useState("")
   const [publishDate, setPublishDate] = useState("")
-  const [resources, setResources] = useState<{ id: string; name: string; type: string }[]>([])
+  const [resources, setResources] = useState<
+    { id: string; name: string; type: string }[]
+  >([])
   const [newResourceName, setNewResourceName] = useState("")
 
   // Datos para autoguardar
@@ -73,7 +74,12 @@ export function AddContentDialog({
   }
 
   // Usar el hook de autoguardado
-  const { isAutosaving, hasAutosavedData, loadAutosavedData, resetAutosavedData } = useAutosave({
+  const {
+    isAutosaving,
+    hasAutosavedData,
+    loadAutosavedData,
+    resetAutosavedData,
+  } = useAutosave({
     key: AUTOSAVE_KEY,
     data: formData,
   })
@@ -113,23 +119,6 @@ export function AddContentDialog({
 
   const handleBack = () => {
     setCurrentStep(currentStep - 1)
-  }
-
-  const handleAddResource = () => {
-    if (!newResourceName.trim()) return
-
-    const fileType = newResourceName.split(".").pop() || "pdf"
-
-    setResources([
-      ...resources,
-      {
-        id: `resource-${uuidv4()}`,
-        name: newResourceName,
-        type: fileType,
-      },
-    ])
-
-    setNewResourceName("")
   }
 
   const handleRemoveResource = (id: string) => {
@@ -204,6 +193,18 @@ export function AddContentDialog({
 
   const color = getContentColor()
 
+  function onAddResource(file: File): void {
+    const fileType = file.name.split(".").pop() || "pdf"
+    setResources((prev) => [
+      ...prev,
+      {
+        id: `resource-${uuidv4()}`,
+        name: file.name,
+        type: fileType,
+      },
+    ])
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -215,8 +216,12 @@ export function AddContentDialog({
               onReset={resetAutosavedData}
             />
           </div>
-          <DialogTitle className={`text-${color}-700`}>Añadir contenido</DialogTitle>
-          <DialogDescription>Completa los siguientes pasos para añadir nuevo contenido al módulo</DialogDescription>
+          <DialogTitle className={`text-${color}-700`}>
+            Añadir contenido
+          </DialogTitle>
+          <DialogDescription>
+            Completa los siguientes pasos para añadir nuevo contenido al módulo
+          </DialogDescription>
         </DialogHeader>
 
         {/* Indicador de pasos */}
@@ -225,27 +230,37 @@ export function AddContentDialog({
             <div className="flex items-center flex-1">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 1 ? `bg-${color}-600 text-white` : "bg-gray-200 text-gray-500"
+                  currentStep >= 1
+                    ? `bg-${color}-600 text-white`
+                    : "bg-gray-200 text-gray-500"
                 }`}
               >
                 1
               </div>
-              <div className={`h-1 flex-1 mx-2 ${currentStep >= 2 ? `bg-${color}-600` : "bg-gray-200"}`}></div>
+              <div
+                className={`h-1 flex-1 mx-2 ${currentStep >= 2 ? `bg-${color}-600` : "bg-gray-200"}`}
+              ></div>
             </div>
             <div className="flex items-center flex-1">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 2 ? `bg-${color}-600 text-white` : "bg-gray-200 text-gray-500"
+                  currentStep >= 2
+                    ? `bg-${color}-600 text-white`
+                    : "bg-gray-200 text-gray-500"
                 }`}
               >
                 2
               </div>
-              <div className={`h-1 flex-1 mx-2 ${currentStep >= 3 ? `bg-${color}-600` : "bg-gray-200"}`}></div>
+              <div
+                className={`h-1 flex-1 mx-2 ${currentStep >= 3 ? `bg-${color}-600` : "bg-gray-200"}`}
+              ></div>
             </div>
             <div className="flex items-center">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 3 ? `bg-${color}-600 text-white` : "bg-gray-200 text-gray-500"
+                  currentStep >= 3
+                    ? `bg-${color}-600 text-white`
+                    : "bg-gray-200 text-gray-500"
                 }`}
               >
                 3
@@ -253,58 +268,104 @@ export function AddContentDialog({
             </div>
           </div>
           <div className="flex justify-between mt-1 text-xs text-gray-500">
-            <span className={currentStep >= 1 ? `text-${color}-600 font-medium` : ""}>Tipo</span>
-            <span className={currentStep >= 2 ? `text-${color}-600 font-medium` : ""}>Detalles</span>
-            <span className={currentStep >= 3 ? `text-${color}-600 font-medium` : ""}>Recursos</span>
+            <span
+              className={
+                currentStep >= 1 ? `text-${color}-600 font-medium` : ""
+              }
+            >
+              Tipo
+            </span>
+            <span
+              className={
+                currentStep >= 2 ? `text-${color}-600 font-medium` : ""
+              }
+            >
+              Detalles
+            </span>
+            <span
+              className={
+                currentStep >= 3 ? `text-${color}-600 font-medium` : ""
+              }
+            >
+              Recursos
+            </span>
           </div>
         </div>
 
         {/* Paso 1: Selección de tipo de contenido */}
         {currentStep === 1 && (
           <div className="grid gap-4 py-4">
-            <RadioGroup value={contentType} onValueChange={setContentType} className="grid grid-cols-2 gap-4">
+            <RadioGroup
+              value={contentType}
+              onValueChange={setContentType}
+              className="grid grid-cols-2 gap-4"
+            >
               <div>
-                <RadioGroupItem value="lesson" id="lesson" className="peer sr-only" />
+                <RadioGroupItem
+                  value="lesson"
+                  id="lesson"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="lesson"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 [&:has([data-state=checked])]:border-blue-500 [&:has([data-state=checked])]:bg-blue-50"
                 >
                   <Video className="mb-2 h-6 w-6 text-blue-500" />
                   <div className="font-medium">Lección</div>
-                  <div className="text-xs text-muted-foreground">Añadir video o contenido</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir video o contenido
+                  </div>
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="quiz" id="quiz" className="peer sr-only" />
+                <RadioGroupItem
+                  value="quiz"
+                  id="quiz"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="quiz"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-amber-500 peer-data-[state=checked]:bg-amber-50 [&:has([data-state=checked])]:border-amber-500 [&:has([data-state=checked])]:bg-amber-50"
                 >
                   <CheckSquare className="mb-2 h-6 w-6 text-amber-500" />
                   <div className="font-medium">Cuestionario</div>
-                  <div className="text-xs text-muted-foreground">Añadir preguntas de evaluación</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir preguntas de evaluación
+                  </div>
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="assignment" id="assignment" className="peer sr-only" />
+                <RadioGroupItem
+                  value="assignment"
+                  id="assignment"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="assignment"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 [&:has([data-state=checked])]:border-emerald-500 [&:has([data-state=checked])]:bg-emerald-50"
                 >
                   <ClipboardList className="mb-2 h-6 w-6 text-emerald-500" />
                   <div className="font-medium">Tarea</div>
-                  <div className="text-xs text-muted-foreground">Añadir tarea práctica</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir tarea práctica
+                  </div>
                 </Label>
               </div>
               <div>
-                <RadioGroupItem value="exam" id="exam" className="peer sr-only" />
+                <RadioGroupItem
+                  value="exam"
+                  id="exam"
+                  className="peer sr-only"
+                />
                 <Label
                   htmlFor="exam"
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rose-500 peer-data-[state=checked]:bg-rose-50 [&:has([data-state=checked])]:border-rose-500 [&:has([data-state=checked])]:bg-rose-50"
                 >
                   <FileCheck className="mb-2 h-6 w-6 text-rose-500" />
                   <div className="font-medium">Examen</div>
-                  <div className="text-xs text-muted-foreground">Añadir evaluación final</div>
+                  <div className="text-xs text-muted-foreground">
+                    Añadir evaluación final
+                  </div>
                 </Label>
               </div>
             </RadioGroup>
@@ -336,7 +397,10 @@ export function AddContentDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="content-description" className={`text-${color}-600`}>
+              <Label
+                htmlFor="content-description"
+                className={`text-${color}-600`}
+              >
                 Descripción
               </Label>
               <Textarea
@@ -376,7 +440,10 @@ export function AddContentDialog({
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="content-close" className={`text-${color}-600`}>
+                  <Label
+                    htmlFor="content-close"
+                    className={`text-${color}-600`}
+                  >
                     Fecha de cierre
                   </Label>
                   <Input
@@ -392,7 +459,10 @@ export function AddContentDialog({
 
             {contentType !== "lesson" && (
               <div className="grid gap-2">
-                <Label htmlFor="content-publish" className={`text-${color}-600`}>
+                <Label
+                  htmlFor="content-publish"
+                  className={`text-${color}-600`}
+                >
                   Fecha de publicación
                 </Label>
                 <Input
@@ -417,7 +487,10 @@ export function AddContentDialog({
                     accept="video/*"
                     className={`border-${color}-200 focus-visible:ring-${color}-500`}
                   />
-                  <Button variant="outline" className={`border-${color}-200 text-${color}-600 hover:bg-${color}-50`}>
+                  <Button
+                    variant="outline"
+                    className={`border-${color}-200 text-${color}-600 hover:bg-${color}-50`}
+                  >
                     <Upload className="mr-2 h-4 w-4" />
                     Subir
                   </Button>
@@ -431,41 +504,39 @@ export function AddContentDialog({
         {currentStep === 3 && (
           <div className="space-y-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="resource-name" className={`text-${color}-600`}>
-                Nombre del recurso
+              <Label htmlFor="resource-files">
+                Arrastra y suelta archivos aquí
               </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="resource-name"
-                  placeholder="Ej: Guía de referencia.pdf"
-                  className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                  value={newResourceName}
-                  onChange={(e) => setNewResourceName(e.target.value)}
-                />
-                <Button
-                  variant="outline"
-                  className={`border-${color}-200 text-${color}-600 hover:bg-${color}-50`}
-                  onClick={handleAddResource}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Añadir
-                </Button>
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="resource-file" className={`text-${color}-600`}>
-                Archivo
-              </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="resource-file"
-                  type="file"
-                  className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                />
-                <Button variant="outline" className={`border-${color}-200 text-${color}-600 hover:bg-${color}-50`}>
-                  <Upload className="mr-2 h-4 w-4" />
-                  Subir
-                </Button>
+              <input
+                id="resource-files"
+                type="file"
+                multiple
+                className="hidden"
+                onChange={(e) => {
+                  const files = Array.from(e.target.files || [])
+                  files.forEach((file) => onAddResource(file))
+                  e.target.value = "" // Reset input for same file upload
+                }}
+              />
+              <div
+                className="border-2 border-dashed border-blue-200 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 transition"
+                onClick={() =>
+                  document.getElementById("resource-files")?.click()
+                }
+                onDrop={(e) => {
+                  e.preventDefault()
+                  const files = Array.from(e.dataTransfer.files)
+                  files.forEach((file) => onAddResource(file))
+                }}
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <Upload className="h-8 w-8 text-blue-400 mb-2" />
+                <span className="text-blue-600 font-medium">
+                  Haz clic o arrastra archivos para añadir
+                </span>
+                <span className="text-xs text-muted-foreground mt-1">
+                  Puedes añadir varios archivos a la vez
+                </span>
               </div>
             </div>
 
@@ -474,7 +545,10 @@ export function AddContentDialog({
               {resources.length > 0 ? (
                 <div className="space-y-2">
                   {resources.map((resource) => (
-                    <div key={resource.id} className="flex items-center justify-between py-2 border-b last:border-0">
+                    <div
+                      key={resource.id}
+                      className="flex items-center justify-between py-2 border-b last:border-0"
+                    >
                       <div className="flex items-center gap-2">
                         {getResourceIcon(resource.type)}
                         <span>{resource.name}</span>
@@ -491,7 +565,9 @@ export function AddContentDialog({
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No hay recursos añadidos todavía</p>
+                <p className="text-sm text-muted-foreground">
+                  No hay recursos añadidos todavía
+                </p>
               )}
             </div>
           </div>
@@ -519,7 +595,10 @@ export function AddContentDialog({
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
-            <Button className={`bg-${color}-600 hover:bg-${color}-700`} onClick={handleFinish}>
+            <Button
+              className={`bg-${color}-600 hover:bg-${color}-700`}
+              onClick={handleFinish}
+            >
               Finalizar
             </Button>
           )}

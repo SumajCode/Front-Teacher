@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { BookPlus, Command, HomeIcon, UserIcon } from "lucide-react"
+import { BookPlus, Command, HomeIcon } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 
@@ -49,15 +49,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   url: "/",
                   icon: HomeIcon,
                 },
-                {
-                  title: "Usuarios",
-                  url: "/usuarios",
-                  icon: UserIcon,
-                  items: [
-                    { title: "Alumnos", url: "/usuarios/alumnos" }, // <-- Activo
-                    { title: "Profesores", url: "/usuarios/profesores" },
-                  ],
-                },
+                // {
+                //   title: "Usuarios",
+                //   url: "/usuarios",
+                //   icon: UserIcon,
+                //   items: [
+                //     { title: "Alumnos", url: "/usuarios/alumnos" }, // <-- Activo
+                //     { title: "Profesores", url: "/usuarios/profesores" },
+                //   ],
+                // },
               ],
             },
             {

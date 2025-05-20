@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -95,7 +95,9 @@ export function CreateCourseDialog({
     setCurrentStep(currentStep - 1)
   }
 
-  const handleFinish = () => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+
     // Crear un nuevo curso con los datos ingresados
     const newCourse = {
       id: `course-${Date.now()}`,
@@ -147,54 +149,60 @@ export function CreateCourseDialog({
         {/* Indicador de pasos */}
         <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
 
-        {/* Paso 1: Información básica */}
-        {currentStep === 1 && (
-          <Step1Info
-            title={title}
-            setTitle={setTitle}
-            description={description}
-            setDescription={setDescription}
-          />
-        )}
-
-        {/* Paso 2: Imagen */}
-        {currentStep === 2 && (
-          <Step2Image
-            imagePreview={imagePreview}
-            setImagePreview={setImagePreview}
-            setImageFile={setImageFile}
-          />
-        )}
-
-        <DialogFooter className="flex justify-between">
-          {currentStep > 1 ? (
-            <Button variant="outline" onClick={handleBack}>
-              Atrás
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={() => handleOpenChange(false)}>
-              Cancelar
-            </Button>
+        <form data-testid="course-form" onSubmit={handleSubmit}>
+          {/* Paso 1: Información básica */}
+          {currentStep === 1 && (
+            <Step1Info
+              title={title}
+              setTitle={setTitle}
+              description={description}
+              setDescription={setDescription}
+            />
           )}
 
-          {currentStep < totalSteps ? (
-            <Button
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-              onClick={handleNext}
-              disabled={currentStep === 1 && (!title || !description)}
-            >
-              Siguiente
-            </Button>
-          ) : (
-            <Button
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-              onClick={handleFinish}
-              disabled={!imagePreview}
-            >
-              Crear curso
-            </Button>
+          {/* Paso 2: Imagen */}
+          {currentStep === 2 && (
+            <Step2Image
+              imagePreview={imagePreview}
+              setImagePreview={setImagePreview}
+              setImageFile={setImageFile}
+            />
           )}
-        </DialogFooter>
+
+          <DialogFooter className="flex justify-between">
+            {currentStep > 1 ? (
+              <Button variant="outline" onClick={handleBack} type="button">
+                Atrás
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => handleOpenChange(false)}
+                type="button"
+              >
+                Cancelar
+              </Button>
+            )}
+
+            {currentStep < totalSteps ? (
+              <Button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                onClick={handleNext}
+                disabled={currentStep === 1 && (!title || !description)}
+                type="button"
+              >
+                Siguiente
+              </Button>
+            ) : (
+              <Button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                type="submit"
+              >
+                Crear curso
+              </Button>
+            )}
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

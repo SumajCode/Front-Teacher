@@ -1,6 +1,7 @@
 "use client"
 
-import type React from "react"
+import React from "react"
+import type { ChangeEvent, DragEvent } from "react"
 import { ImageIcon, Upload, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,7 +19,7 @@ export function Step2Image({
   setImagePreview,
   setImageFile,
 }: Step2ImageProps) {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
       handleFile(files[0])
@@ -37,19 +38,19 @@ export function Step2Image({
     }
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     e.currentTarget.classList.add("border-indigo-400", "bg-indigo-100")
   }
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     e.currentTarget.classList.remove("border-indigo-400", "bg-indigo-100")
   }
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     e.currentTarget.classList.remove("border-indigo-400", "bg-indigo-100")

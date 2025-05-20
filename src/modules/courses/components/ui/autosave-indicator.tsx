@@ -1,8 +1,14 @@
 "use client"
 
+import React from "react"
 import { Save, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface AutosaveIndicatorProps {
   isAutosaving: boolean
@@ -10,7 +16,11 @@ interface AutosaveIndicatorProps {
   onReset: () => void
 }
 
-export function AutosaveIndicator({ isAutosaving, hasAutosavedData, onReset }: AutosaveIndicatorProps) {
+export function AutosaveIndicator({
+  isAutosaving,
+  hasAutosavedData,
+  onReset,
+}: AutosaveIndicatorProps) {
   return (
     <div className="flex items-center gap-2">
       <TooltipProvider>

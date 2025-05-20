@@ -82,6 +82,7 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
     setCurrentModuleId(moduleId)
     setContentType("lesson") // Establecer un valor predeterminado
     setIsAddContentDialogOpen(true)
+    // console.log("xd", { moduleId })
   }
 
   const handleAddModule = () => {

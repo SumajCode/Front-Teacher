@@ -13,9 +13,9 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   collectCoverage: true,
   collectCoverageFrom: [
-    "src/**/*.{ts,tsx}",
-    "!src/**/*.d.ts",
-    "!src/**/layout.tsx",
-    "!src/**/index.ts",
+    // Solo archivos TypeScript/TSX dentro de modules
+    "src/modules/**/*.{ts,tsx}",
+    // Omitir archivos de definiciones
+    "!src/modules/**/*.d.ts",
   ],
 }
