@@ -1,12 +1,21 @@
-import Layout from '@/layout/Layout'
-import './globals.css'
+import type React from "react"
+import Layout from "@/layout/Layout"
+import "./globals.css"
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="es">
-      <Layout>
-        <body>{children}</body>
-      </Layout>
+      <body>
+        <Layout>{children}</Layout>
+      </body>
     </html>
   )
 }
+
+// export const metadata = {
+
+//     };
