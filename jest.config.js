@@ -1,5 +1,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
+  // Use babel-jest for transforming TS and JSX
   transform: {
     "^.+\\.[tj]sx?$": "babel-jest",
   },
