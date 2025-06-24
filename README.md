@@ -1,6 +1,6 @@
 # Front Docente
 
-Una aplicación web construida con Next. **TypeScript**, que muestra la gestión y visualización de cursos.
+Una aplicación web construida con Next. **TypeScript**, que muestra la gestión y visualización de cursos......
 
 ## 🔧 Clonar el repositorio
 
