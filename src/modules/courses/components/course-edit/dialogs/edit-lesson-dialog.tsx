@@ -18,17 +18,19 @@ import { Download, Trash, Upload, X } from "lucide-react"
 import { getResourceIcon } from "@/modules/courses/utils/course-helpers"
 import { useAutosave } from "@/modules/courses/hooks/use-autosave"
 import { AutosaveIndicator } from "@/modules/courses/components/ui/autosave-indicator"
-import type { Lesson } from "@/modules/courses/types"
+// Accept any content item structure
+// import type { Lesson } from "@/modules/courses/types"
 
 interface EditLessonDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  lesson: Lesson | null
+  lesson: any | null
   activeTab: string
   setActiveTab: (tab: string) => void
   newResourceName: string
   setNewResourceName: (name: string) => void
-  onAddResource: (file: File, lesson: Lesson) => void
+  onAddResource: (resourceName: string, lesson: Lesson) => void
+
   onDeleteResource: (resourceId: string, lessonId: string) => void
 }
 
@@ -45,6 +47,8 @@ export function EditLessonDialog({
 }: EditLessonDialogProps) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
+  const [points, setPoints] = useState("")
+  const [timeDeliver, setTimeDeliver] = useState("")
 
   // Clave única para este formulario basada en el ID de la lección
   const autosaveKey = lesson
@@ -55,6 +59,8 @@ export function EditLessonDialog({
   const formData = {
     title,
     description,
+    points,
+    timeDeliver,
     activeTab,
     newResourceName,
   }
@@ -74,7 +80,14 @@ export function EditLessonDialog({
   useEffect(() => {
     if (lesson) {
       setTitle(lesson.title)
-      setDescription("") // Asumimos que no hay descripción en el modelo actual
+      // Map description from content JSON
+      setDescription(lesson.content?.description || "")
+      setPoints(lesson.content?.points?.toString() || "")
+      setTimeDeliver(
+        lesson.time_deliver
+          ? new Date(lesson.time_deliver).toISOString().slice(0, 16)
+          : ""
+      )
     }
   }, [lesson])
 
@@ -96,6 +109,8 @@ export function EditLessonDialog({
     console.log("Lección actualizada:", {
       title,
       description,
+      points,
+      timeDeliver,
       resources: lesson?.resources,
     })
 
@@ -191,6 +206,26 @@ export function EditLessonDialog({
               />
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="lesson-points">Puntos</Label>
+              <Input
+                id="lesson-points"
+                type="number"
+                value={points}
+                onChange={(e) => setPoints(e.target.value)}
+                className="border-blue-200 focus-visible:ring-blue-500"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="lesson-time-deliver">Fecha de entrega</Label>
+              <Input
+                id="lesson-time-deliver"
+                type="datetime-local"
+                value={timeDeliver}
+                onChange={(e) => setTimeDeliver(e.target.value)}
+                className="border-blue-200 focus-visible:ring-blue-500"
+              />
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="lesson-video">Video</Label>
               {!videoPreview ? (
                 <div
@@ -248,7 +283,7 @@ export function EditLessonDialog({
                 className="hidden"
                 onChange={(e) => {
                   const files = Array.from(e.target.files || [])
-                  files.forEach((file) => onAddResource(file, lesson))
+                  files.forEach((file) => onAddResource(file.name, lesson))
                   e.target.value = "" // Reset input for same file upload
                 }}
               />
@@ -260,7 +295,7 @@ export function EditLessonDialog({
                 onDrop={(e) => {
                   e.preventDefault()
                   const files = Array.from(e.dataTransfer.files)
-                  files.forEach((file) => onAddResource(file, lesson))
+                  files.forEach((file) => onAddResource(file.name, lesson))
                 }}
                 onDragOver={(e) => e.preventDefault()}
               >

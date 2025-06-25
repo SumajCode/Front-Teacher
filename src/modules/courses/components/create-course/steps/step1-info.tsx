@@ -4,20 +4,19 @@ import React from "react"
 import { BookOpen } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 
 interface Step1InfoProps {
   title: string
   setTitle: (value: string) => void
-  description: string
-  setDescription: (value: string) => void
+  nivelEstudio: string
+  setNivelEstudio: (value: string) => void
 }
 
 export function Step1Info({
   title,
   setTitle,
-  description,
-  setDescription,
+  nivelEstudio,
+  setNivelEstudio,
 }: Step1InfoProps) {
   return (
     <div className="space-y-4 py-4">
@@ -50,17 +49,21 @@ export function Step1Info({
       </div>
 
       <div className="grid gap-3">
-        <Label htmlFor="description" className="text-blue-700">
-          Descripción *
+        <Label htmlFor="nivel" className="text-blue-700">
+          Nivel de estudio *
         </Label>
-        <Textarea
-          id="description"
-          placeholder="Describe tu curso..."
-          className="min-h-[120px] border-blue-200 focus-visible:ring-blue-500"
+        <select
+          id="nivel"
+          className="border border-blue-200 focus-visible:ring-blue-500 rounded-md px-3 py-2"
           required
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          value={nivelEstudio}
+          onChange={(e) => setNivelEstudio(e.target.value)}
+        >
+          <option value="" disabled>Selecciona un nivel...</option>
+          <option value="principiante">Principiante</option>
+          <option value="intermedio">Intermedio</option>
+          <option value="avanzado">Avanzado</option>
+        </select>
       </div>
     </div>
   )

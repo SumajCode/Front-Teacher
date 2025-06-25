@@ -9,11 +9,15 @@ export interface Course {
   description: string
   image: string
   modules: number
-  lessons: number
+  archivo: Archivos[]
   duration: string
   color: string
 }
-
+export interface Archivos {
+  _id: string
+  nombre: string
+  url: string
+}
 export interface Resource {
   id: string
   name: string
@@ -32,10 +36,43 @@ export interface Lesson {
   grade?: number
 }
 
+// Represents additional rules for assignments or quizzes
+export interface Rules {
+  functions?: {
+    functionNames: string[]
+  }
+  imports?: string[]
+}
+
+// Represents a content item (lesson, assignment, quiz, etc.) in a module
+export interface ContentItem {
+  _id: string
+  id_contenido: string
+  id_modulo: string
+  title: string
+  type: string
+  timestamp: string
+  time_deliver?: string
+  content: {
+    description?: string
+    points?: number
+    rules?: Rules
+    status?: string
+  }
+  files?: string[]
+}
+
 export interface Module {
   id: string
   title: string
-  lessons: Lesson[]
+  archivos: Archivos[]
+  // content items for this module
+  contenido: ContentItem[]
+  // identifiers for filtering
+  id_docente: number
+  id_materia: number
+  /** Descripción del módulo */
+  desciption?: string
 }
 
 export interface Student {

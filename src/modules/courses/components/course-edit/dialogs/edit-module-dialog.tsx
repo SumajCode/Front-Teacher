@@ -14,26 +14,73 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useEffect, useState } from "react"
 import type { Module } from "@/modules/courses/types"
+import { editarModulo } from "@/services/moduloService"
 
 interface EditModuleDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   module: Module | null
+  /** Callback tras guardar: devuelve el módulo actualizado */
+  onUpdate?: (module: Module) => void
 }
 
-export function EditModuleDialog({ open, onOpenChange, module }: EditModuleDialogProps) {
+export function EditModuleDialog({
+  open,
+  onOpenChange,
+  module,
+  onUpdate,
+}: EditModuleDialogProps) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
 
   useEffect(() => {
     if (module) {
       setTitle(module.title)
-      setDescription("") // Asumimos que no hay descripción en el modelo actual
+      setDescription(module.desciption) // Asumimos que no hay descripción en el modelo actual
     }
   }, [module])
 
-  const handleSave = () => {
-    // Aquí iría la lógica para guardar los cambios
+  const handleSave = async () => {
+    if (!module) return
+
+    const body = {
+      data: {
+        id_docente: module.id_docente,
+        id_materia: module.id_materia,
+        title,
+        desciption: description, // 👈 cuidado, se mantiene con "c"
+      },
+      filter: {
+        id: module.id,
+      },
+      todo: "false", // 👈 debe ser string, no booleano
+    }
+
+    console.log("Cuerpo de la solicitud:", body)
+    try {
+      const response = await fetch(
+        `https://microservice-content.onrender.com/apicontenido/v1/modulo/editar`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`)
+      }
+
+      const result = await response.json()
+      console.log("Módulo actualizado:", result)
+      // Actualizar en UI llamando al callback
+      onUpdate?.({ ...module, title, desciption: description })
+    } catch (error) {
+      console.error("Error al editar el módulo", error)
+    }
+
     onOpenChange(false)
   }
 
@@ -44,7 +91,9 @@ export function EditModuleDialog({ open, onOpenChange, module }: EditModuleDialo
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-blue-700">Editar módulo</DialogTitle>
-          <DialogDescription>Modifica los detalles del módulo</DialogDescription>
+          <DialogDescription>
+            Modifica los detalles del módulo
+          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">

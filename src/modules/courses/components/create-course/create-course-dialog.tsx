@@ -14,7 +14,8 @@ import { useAutosave } from "@/modules/courses/hooks/use-autosave"
 import { AutosaveIndicator } from "@/modules/courses/components/ui/autosave-indicator"
 import { StepIndicator } from "@/modules/courses/components/create-course/steps/step-indicator"
 import { Step1Info } from "@/modules/courses/components/create-course/steps/step1-info"
-
+import { crearMateria } from "@/services/materiaService"
+import { docenteMock } from "@/lib/docenteMock"
 import { Step2Image } from "@/modules/courses/components/create-course/steps/step2-image"
 
 interface CreateCourseDialogProps {
@@ -22,7 +23,6 @@ interface CreateCourseDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-// Clave para almacenar los datos en localStorage
 const AUTOSAVE_KEY = "course_creation_autosave"
 
 export function CreateCourseDialog({
@@ -32,26 +32,18 @@ export function CreateCourseDialog({
   const [currentStep, setCurrentStep] = useState(1)
   const totalSteps = 2
 
-  // Paso 1: Información básica
   const [title, setTitle] = useState("")
-
-  const [description, setDescription] = useState("")
-
-  // Paso 2: Imagen
-  //descomentar cuando se use la api para mandar el file
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [nivelEstudio, setNivelEstudio] = useState("")
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  // Datos para autoguardar
   const formData = {
     currentStep,
     title,
-    description,
+    nivelEstudio,
     imagePreview,
   }
 
-  // Usar el hook de autoguardado
   const {
     isAutosaving,
     hasAutosavedData,
@@ -62,71 +54,42 @@ export function CreateCourseDialog({
     data: formData,
   })
 
-  // Cargar datos autoguardados al abrir el modal
   useEffect(() => {
     if (open) {
       const savedData = loadAutosavedData()
       if (savedData) {
-        // Cargar los datos guardados
         setCurrentStep(savedData.currentStep || 1)
         setTitle(savedData.title || "")
-        setDescription(savedData.description || "")
+        setNivelEstudio(savedData.nivelEstudio || "")
         setImagePreview(savedData.imagePreview || null)
       }
     }
   }, [open])
 
-  // Resetear el estado cuando se cierra el diálogo
   const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      // No reiniciamos los datos al cerrar para mantener el autoguardado
-      // Solo actualizamos el estado de apertura
-      onOpenChange(open)
-    } else {
-      onOpenChange(open)
-    }
+    onOpenChange(open)
   }
 
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1)
-  }
+  const handleNext = () => setCurrentStep(currentStep + 1)
+  const handleBack = () => setCurrentStep(currentStep - 1)
 
-  const handleBack = () => {
-    setCurrentStep(currentStep - 1)
-  }
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    // Crear un nuevo curso con los datos ingresados
-    const newCourse = {
-      id: `course-${Date.now()}`,
-      title,
-      description,
-      image:
-        imagePreview ||
-        "/placeholder.svg?height=150&width=250&text=Curso+Nuevo",
-      status: "draft",
-      students: 0,
-      rating: 0,
-      revenue: "$0",
-      lastUpdated: new Date().toISOString().split("T")[0],
-      modules: 0,
-      lessons: 0,
-      duration: "0h 0m",
-      color: "blue",
+    try {
+      await crearMateria({
+        nombre_materia: title,
+        nivel_estudio: nivelEstudio,
+        id_docente: docenteMock.id,
+      })
+
+      resetAutosavedData()
+      handleOpenChange(false)
+      window.location.reload()
+    } catch (error) {
+      console.error("Error al crear el curso:", error)
+      alert("Hubo un error al crear el curso. Intenta nuevamente.")
     }
-
-    console.log("Nuevo curso creado:", newCourse)
-
-    // En una aplicación real, aquí enviaríamos los datos al servidor
-    // y actualizaríamos el estado global de cursos
-
-    // Eliminar datos autoguardados al completar exitosamente
-    resetAutosavedData()
-
-    // Cerrar el diálogo
-    handleOpenChange(false)
   }
 
   return (
@@ -146,21 +109,18 @@ export function CreateCourseDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Indicador de pasos */}
         <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
 
         <form data-testid="course-form" onSubmit={handleSubmit}>
-          {/* Paso 1: Información básica */}
           {currentStep === 1 && (
             <Step1Info
               title={title}
               setTitle={setTitle}
-              description={description}
-              setDescription={setDescription}
+              nivelEstudio={nivelEstudio}
+              setNivelEstudio={setNivelEstudio}
             />
           )}
 
-          {/* Paso 2: Imagen */}
           {currentStep === 2 && (
             <Step2Image
               imagePreview={imagePreview}
@@ -186,10 +146,10 @@ export function CreateCourseDialog({
 
             {currentStep < totalSteps ? (
               <Button
+                type="button"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 onClick={handleNext}
-                disabled={currentStep === 1 && (!title || !description)}
-                type="button"
+                disabled={!title || !nivelEstudio}
               >
                 Siguiente
               </Button>

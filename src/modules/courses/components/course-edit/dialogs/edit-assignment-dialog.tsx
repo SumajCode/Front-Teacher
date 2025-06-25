@@ -16,17 +16,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Download, Plus, Trash, Upload } from "lucide-react"
 import { getResourceIcon } from "@/modules/courses/utils/course-helpers"
-import type { Lesson } from "@/modules/courses/types"
+import type { ContentItem } from "@/modules/courses/types"
+import { useState, useEffect } from "react"
 
 interface EditAssignmentDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  assignment: Lesson | null
+  assignment: ContentItem | null
   activeTab: string
   setActiveTab: (tab: string) => void
   newResourceName: string
   setNewResourceName: (name: string) => void
-  onAddResource: (resourceName: string, lesson: Lesson) => void
+  onAddResource: (resourceName: string, lesson: ContentItem) => void
   onDeleteResource: (resourceId: string, lessonId: string) => void
 }
 
@@ -43,6 +44,36 @@ export function EditAssignmentDialog({
 }: EditAssignmentDialogProps) {
   if (!assignment) return null
 
+  // State for dialog fields
+  const [title, setTitle] = useState<string>("")
+  const [description, setDescription] = useState<string>("")
+  const [points, setPoints] = useState<string>("")
+  const [timeDeliver, setTimeDeliver] = useState<string>("")
+  const [status, setStatus] = useState<string>("")
+
+  // Initialize when assignment changes
+  useEffect(() => {
+    setTitle(assignment.title)
+    setDescription(assignment.content.description || "")
+    setPoints(assignment.content.points?.toString() || "")
+    setStatus(assignment.content.status || "")
+    setTimeDeliver(
+      assignment.time_deliver
+        ? new Date(assignment.time_deliver).toISOString().slice(0, 16)
+        : ""
+    )
+  }, [assignment])
+  const handleSubmit = () => {
+    console.log("Tarea actualizada:", {
+      title,
+      description,
+      points,
+      timeDeliver,
+    })
+
+    // onOpenChange(false)
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -54,13 +85,15 @@ export function EditAssignmentDialog({
                 ? "Editar tarea"
                 : "Editar examen"}
           </DialogTitle>
-          <DialogDescription>Configura los detalles y tiempos</DialogDescription>
+          <DialogDescription>
+            Configura los detalles y tiempos
+          </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-2">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="details">Detalles</TabsTrigger>
-            <TabsTrigger value="resources">Recursos</TabsTrigger>
+            {/* <TabsTrigger value="resources">Recursos</TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="details" className="space-y-4 pt-4">
@@ -68,7 +101,8 @@ export function EditAssignmentDialog({
               <Label htmlFor="assignment-title">Título</Label>
               <Input
                 id="assignment-title"
-                defaultValue={assignment.title}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="border-amber-200 focus-visible:ring-amber-500"
               />
             </div>
@@ -76,59 +110,38 @@ export function EditAssignmentDialog({
               <Label htmlFor="assignment-description">Descripción</Label>
               <Textarea
                 id="assignment-description"
-                placeholder="Describe esta actividad..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="border-amber-200 focus-visible:ring-amber-500"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="assignment-duration">Duración</Label>
+              <Label htmlFor="assignment-points">Puntos</Label>
               <Input
-                id="assignment-duration"
-                defaultValue={assignment.duration}
+                id="assignment-points"
+                type="number"
+                value={points}
+                onChange={(e) => setPoints(e.target.value)}
                 className="border-amber-200 focus-visible:ring-amber-500"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="assignment-open">Fecha de apertura</Label>
-                <Input
-                  id="assignment-open"
-                  type="datetime-local"
-                  defaultValue={assignment.openDate}
-                  className="border-amber-200 focus-visible:ring-amber-500"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="assignment-close">Fecha de cierre</Label>
-                <Input
-                  id="assignment-close"
-                  type="datetime-local"
-                  defaultValue={assignment.closeDate}
-                  className="border-amber-200 focus-visible:ring-amber-500"
-                />
-              </div>
-            </div>
             <div className="grid gap-2">
-              <Label htmlFor="assignment-publish">Fecha de publicación</Label>
+              <Label htmlFor="assignment-time-deliver">Fecha de entrega</Label>
               <Input
-                id="assignment-publish"
+                id="assignment-time-deliver"
                 type="datetime-local"
-                defaultValue={assignment.publishDate}
+                value={timeDeliver}
+                onChange={(e) => setTimeDeliver(e.target.value)}
                 className="border-amber-200 focus-visible:ring-amber-500"
               />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="assignment-attempts">Intentos múltiples</Label>
-                <p className="text-sm text-muted-foreground">Permitir múltiples intentos</p>
-              </div>
-              <Switch id="assignment-attempts" />
             </div>
           </TabsContent>
 
           <TabsContent value="resources" className="space-y-4 pt-4">
             <div className="grid gap-2">
-              <Label htmlFor="assignment-resource-name">Nombre del recurso</Label>
+              <Label htmlFor="assignment-resource-name">
+                Nombre del recurso
+              </Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="assignment-resource-name"
@@ -155,7 +168,10 @@ export function EditAssignmentDialog({
                   type="file"
                   className="border-amber-200 focus-visible:ring-amber-500"
                 />
-                <Button variant="outline" className="border-amber-200 text-amber-600 hover:bg-amber-50">
+                <Button
+                  variant="outline"
+                  className="border-amber-200 text-amber-600 hover:bg-amber-50"
+                >
                   <Upload className="mr-2 h-4 w-4" />
                   Subir
                 </Button>
@@ -167,7 +183,10 @@ export function EditAssignmentDialog({
               {assignment.resources && assignment.resources.length > 0 ? (
                 <div className="space-y-2">
                   {assignment.resources.map((resource) => (
-                    <div key={resource.id} className="flex items-center justify-between py-2 border-b last:border-0">
+                    <div
+                      key={resource.id}
+                      className="flex items-center justify-between py-2 border-b last:border-0"
+                    >
                       <div className="flex items-center gap-2">
                         {getResourceIcon(resource.type)}
                         <span>{resource.name}</span>
@@ -184,7 +203,9 @@ export function EditAssignmentDialog({
                           variant="ghost"
                           size="sm"
                           className="h-8 text-red-600 hover:text-red-800 hover:bg-red-100"
-                          onClick={() => onDeleteResource(resource.id, assignment.id)}
+                          onClick={() =>
+                            onDeleteResource(resource.id, assignment.id)
+                          }
                         >
                           <Trash className="h-3 w-3" />
                         </Button>
@@ -193,7 +214,9 @@ export function EditAssignmentDialog({
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No hay recursos para esta evaluación</p>
+                <p className="text-sm text-muted-foreground">
+                  No hay recursos para esta evaluación
+                </p>
               )}
             </div>
           </TabsContent>
@@ -203,7 +226,10 @@ export function EditAssignmentDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
-          <Button className="bg-amber-600 hover:bg-amber-700" onClick={() => onOpenChange(false)}>
+          <Button
+            className="bg-amber-600 hover:bg-amber-700"
+            onClick={() => handleSubmit()}
+          >
             Guardar cambios
           </Button>
         </DialogFooter>

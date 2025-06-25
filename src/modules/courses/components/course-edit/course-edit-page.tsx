@@ -25,25 +25,46 @@ import { DeleteModuleDialog } from "@/modules/courses/components/course-edit/dia
 import { useCourseModules } from "@/modules/courses/hooks/use-course-modules"
 import { useStudents } from "@/modules/courses/hooks/use-students"
 import { useStudentGrades } from "@/modules/courses/hooks/use-student-grades"
-import { courses } from "@/modules/courses/data/courses"
+
 import type { Module } from "@/modules/courses/types"
 
-export function CourseEditPage({ params }: { params: { courseId: string } }) {
-  const { modules, setModules, handleAddResource, handleDeleteResource } =
-    useCourseModules()
+import { docenteMock } from "@/lib/docenteMock"
+
+export function CourseEditPage({ courseId }: { courseId: string }) {
+  const {
+    modules,
+    deleteModule: apiDeleteModule,
+    handleAddResource,
+    handleDeleteResource,
+  } = useCourseModules()
   const { students } = useStudents()
   const { studentGrades } = useStudentGrades()
   const [course, setCourse] = useState<any>(null)
 
   // Cargar datos del curso
+  console.log("courseId", courseId)
   useEffect(() => {
-    if (params.courseId) {
-      const foundCourse = courses.find((c) => c.id === params.courseId)
-      if (foundCourse) {
-        setCourse(foundCourse)
+    async function fetchCourse() {
+      try {
+        const response = await fetch(
+          "https://microservice-docente.onrender.com/apidocentes/v1/materia/listar",
+          {
+            method: "GET",
+          }
+        )
+        console.log("Response from API:", response)
+        const result = await response.json()
+
+        setCourse(result)
+      } catch (error) {
+        console.error("Error fetching course from API", error)
       }
     }
-  }, [params.courseId])
+
+    if (courseId) {
+      fetchCourse()
+    }
+  }, [courseId])
 
   const [editingLesson, setEditingLesson] = useState<any>(null)
   const [isLessonDialogOpen, setIsLessonDialogOpen] = useState(false)
@@ -105,17 +126,7 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
   }
 
   // Calcular el promedio de calificaciones
-  const allGrades = modules
-    .flatMap((module) =>
-      module.lessons.filter(
-        (lesson) =>
-          lesson.type === "quiz" ||
-          lesson.type === "assignment" ||
-          lesson.type === "exam"
-      )
-    )
-    .map((lesson) => lesson.grade || 0)
-
+  const allGrades = [0]
   const averageGrade =
     allGrades.length > 0
       ? Math.round(
@@ -145,8 +156,16 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
             <span className="sr-only">Volver</span>
           </Link>
         </Button>
-        <h1 className="text-3xl font-bold">Editar curso: {course.title}</h1>
+        <h1 className="text-3xl font-bold">
+          Editar curso: {course.data.nombre_materia}
+        </h1>
       </div>
+      {/* {Array.isArray(course?.data) &&
+        course.data.map((c: any) => (
+          <div key={c.id} className="text-lg font-semibold">
+            {c.nombre_materia}
+          </div>
+        ))} */}
 
       <Tabs defaultValue="content">
         <TabsList className="bg-blue-50 dark:bg-blue-950">
@@ -162,12 +181,12 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
           >
             Estudiantes
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="grades"
             className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
           >
             Notas
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger
             value="details"
             className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
@@ -185,6 +204,7 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
 
         <TabsContent value="content" className="mt-6 space-y-6">
           <ContentTab
+            courseId={courseId}
             modules={modules}
             onAddModule={handleAddModule}
             onAddContent={handleAddContent}
@@ -230,6 +250,7 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
       />
 
       <AddModuleDialog
+        courseId={courseId}
         open={isAddModuleDialogOpen}
         onOpenChange={setIsAddModuleDialogOpen}
       />
@@ -280,9 +301,9 @@ export function CourseEditPage({ params }: { params: { courseId: string } }) {
         open={isDeleteModuleDialogOpen}
         onOpenChange={setIsDeleteModuleDialogOpen}
         moduleId={moduleToDelete}
-        onConfirm={(moduleId) => {
-          // Aquí iría la lógica para eliminar el módulo
-          setModules(modules.filter((m) => m.id !== moduleId))
+        onConfirm={async (moduleId) => {
+          // Elimina el módulo vía servicio y refresca la lista
+          await apiDeleteModule(moduleId)
           setIsDeleteModuleDialogOpen(false)
         }}
       />
