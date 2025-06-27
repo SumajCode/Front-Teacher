@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { docenteMock } from "@/lib/docenteMock"
+import { getDocente } from "@/lib/docenteMock"
 
 interface AddModuleDialogProps {
   open: boolean
@@ -30,11 +30,12 @@ export function AddModuleDialog({
 }: AddModuleDialogProps) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
+  const docente = getDocente()
 
   const handleSubmit = async () => {
     const body = {
       data: {
-        id_docente: docenteMock.id,
+        id_docente: docente.id,
         id_materia: parseInt(courseId),
         title,
         desciption: description, // <- mal escrito intencionalmente según la API
@@ -72,7 +73,6 @@ export function AddModuleDialog({
       }
 
       onOpenChange(false)
-
     } catch (error) {
       console.error("Error al crear el módulo:", error)
     }

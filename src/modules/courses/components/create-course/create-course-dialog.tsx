@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { crearMateria } from "@/services/materiaService"
-import { docenteMock } from "@/lib/docenteMock"
+import { getDocente } from "@/lib/docenteMock"
 import { StepIndicator } from "@/modules/courses/components/create-course/steps/step-indicator"
 import { Step1Info } from "@/modules/courses/components/create-course/steps/step1-info"
 
@@ -41,10 +41,11 @@ export function CreateCourseDialog({
     event.preventDefault()
 
     try {
+      const docente = getDocente()
       await crearMateria({
         nombre_materia: title,
         nivel_estudio: nivelEstudio,
-        id_docente: docenteMock.id,
+        id_docente: docente.id,
       })
 
       handleOpenChange(false)

@@ -25,9 +25,19 @@ import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters"
 
 import { Plus, Search } from "lucide-react"
 import { CreateCourseDialog } from "@/modules/courses/components/create-course/create-course-dialog"
-import { docenteMock } from "@/lib/docenteMock"
+import { getDocente } from "@/lib/docenteMock"
+
+// Tipo para los datos de materia recibidos de la API
+interface MateriaApi {
+  id_docente: number
+  id?: string
+  nombre_materia?: string
+  nivel_estudio?: string
+}
 
 export function CoursesPage() {
+  const docente = getDocente()
+  const docenteId = docente.id
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
   const [isCreateCourseDialogOpen, setIsCreateCourseDialogOpen] =
     useState(false)
@@ -40,18 +50,13 @@ export function CoursesPage() {
     useCourseFilters(coursesData, currentTab)
 
   useEffect(() => {
-    listarMateriasPorDocente(1) // Usa un id fijo o pásalo como prop/contexto
+    listarMateriasPorDocente(docenteId)
       .then((res) => {
         const todasLasMaterias = res.data
 
         const soloDelDocente = todasLasMaterias.filter(
-          (materia: any) => materia.id_docente === docenteMock.id
+          (materia: MateriaApi) => materia.id_docente === docenteId
         )
-        interface MateriaApi {
-          id?: string
-          nombre_materia?: string
-          nivel_estudio?: string
-        }
         const cursosFormateados: Course[] = soloDelDocente.map(
           (materia: MateriaApi, index: number) => ({
             id: materia.id ?? `sin-id-${index}`,
@@ -72,7 +77,7 @@ export function CoursesPage() {
         setCoursesData(cursosFormateados)
       })
       .catch((err) => console.error("Error al cargar materias:", err))
-  }, [])
+  }, [docenteId])
 
   return (
     <div className="space-y-6">
