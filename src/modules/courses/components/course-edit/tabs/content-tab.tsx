@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import type { Module, AssignmentWithResources } from "@/modules/courses/types"
-import { docenteMock } from "@/lib/docenteMock"
+import { getDocente } from "@/lib/docenteMock"
 
 interface ContentTabProps {
   courseId: string
@@ -40,13 +40,15 @@ export function ContentTab({
 }: ContentTabProps) {
   const [datosFiltrados, setDatosFiltrados] = useState<Module[]>([])
   const id = parseInt(courseId)
+  const docente = getDocente()
+  const docenteId = docente.id
 
   useEffect(() => {
     const filtered = modules.filter(
-      (mod) => mod.id_docente === docenteMock.id && mod.id_materia === id
+      (mod) => mod.id_docente === docenteId && mod.id_materia === id
     )
     setDatosFiltrados(filtered)
-  }, [modules, id])
+  }, [modules, id, docenteId])
 
   return (
     <Card className="border-blue-200 shadow-md">
@@ -108,7 +110,10 @@ export function ContentTab({
                 <div className="space-y-2 pl-6 pt-2">
                   {module.contenido?.map((archivo) => {
                     // Si el archivo tiene 'duration', úsalo, si no, usa time_deliver
-                    const duration = (archivo as { duration?: string }).duration || archivo.time_deliver || "";
+                    const duration =
+                      (archivo as { duration?: string }).duration ||
+                      archivo.time_deliver ||
+                      ""
                     return (
                       <div
                         key={archivo._id + "-wrapper"}
@@ -119,29 +124,31 @@ export function ContentTab({
                           {/* {getLessonIcon(archivo.type)} eliminado */}
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-medium">{archivo.title}</span>
+                              <span className="font-medium">
+                                {archivo.title}
+                              </span>
                               <Badge
                                 variant={
                                   archivo.type === "video"
                                     ? "default"
                                     : archivo.type === "quiz"
-                                    ? "secondary"
-                                    : archivo.type === "assignment"
-                                    ? "outline"
-                                    : archivo.type === "evaluacion"
-                                    ? "destructive"
-                                    : "default"
+                                      ? "secondary"
+                                      : archivo.type === "assignment"
+                                        ? "outline"
+                                        : archivo.type === "evaluacion"
+                                          ? "destructive"
+                                          : "default"
                                 }
                               >
                                 {archivo.type === "video"
                                   ? "Video"
                                   : archivo.type === "quiz"
-                                  ? "Cuestionario"
-                                  : archivo.type === "assignment"
-                                  ? "Tarea"
-                                  : archivo.type === "evaluacion"
-                                  ? "Evaluación"
-                                  : archivo.type}
+                                    ? "Cuestionario"
+                                    : archivo.type === "assignment"
+                                      ? "Tarea"
+                                      : archivo.type === "evaluacion"
+                                        ? "Evaluación"
+                                        : archivo.type}
                               </Badge>
                             </div>
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -156,7 +163,9 @@ export function ContentTab({
                             variant="ghost"
                             size="icon"
                             className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
-                            onClick={() => onEditAssignment({ ...archivo, id: archivo._id })}
+                            onClick={() =>
+                              onEditAssignment({ ...archivo, id: archivo._id })
+                            }
                           >
                             <Edit className="h-4 w-4" />
                             <span className="sr-only">Editar archivo</span>
@@ -174,7 +183,7 @@ export function ContentTab({
                           </Button>
                         </div>
                       </div>
-                    );
+                    )
                   })}
                   <Button
                     variant="outline"
