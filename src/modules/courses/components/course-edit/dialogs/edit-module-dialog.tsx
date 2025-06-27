@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useEffect, useState } from "react"
 import type { Module } from "@/modules/courses/types"
-import { editarModulo } from "@/services/moduloService"
 
 interface EditModuleDialogProps {
   open: boolean
@@ -36,7 +35,7 @@ export function EditModuleDialog({
   useEffect(() => {
     if (module) {
       setTitle(module.title)
-      setDescription(module.desciption) // Asumimos que no hay descripción en el modelo actual
+      setDescription(module.desciption ?? "") // Asegura string, nunca undefined
     }
   }, [module])
 
@@ -51,7 +50,7 @@ export function EditModuleDialog({
         desciption: description, // 👈 cuidado, se mantiene con "c"
       },
       filter: {
-        id: module.id,
+        id: module._id,
       },
       todo: "false", // 👈 debe ser string, no booleano
     }

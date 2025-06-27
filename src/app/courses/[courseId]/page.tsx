@@ -1,10 +1,10 @@
 import { CourseEditPage } from "@/modules/courses/components/course-edit/course-edit-page"
 
-export default function CoursePage({
+export default async function CoursePage({
   params,
 }: {
-  params: { courseId: string }
+  params: Promise<{ courseId: string }>
 }) {
-  // console.log({ params: params.courseId })
-  return <CourseEditPage courseId={params.courseId} />
+  const resolvedParams = await params
+  return <CourseEditPage courseId={resolvedParams.courseId} />
 }

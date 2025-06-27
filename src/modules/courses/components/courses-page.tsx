@@ -16,9 +16,9 @@ import {
 import { CourseGrid } from "@/modules/courses/components/course-grid"
 import { CourseTable } from "@/modules/courses/components/course-table"
 
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { listarMateriasPorDocente } from "@/services/materiaService"
-import { docenteMock } from "@/lib/docenteMock"
+import type { Course } from "@/modules/courses/types"
 
 import { EmptyState } from "@/modules/courses/components/empty-state"
 import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters"
@@ -33,28 +33,37 @@ export function CoursesPage() {
 
   const [currentTab, setCurrentTab] = useState("all")
 
-  const [coursesData, setCoursesData] = useState<any[]>([])
+  const [coursesData, setCoursesData] = useState<Course[]>([])
 
   const { searchQuery, setSearchQuery, sortBy, setSortBy, filteredCourses } =
     useCourseFilters(coursesData, currentTab)
 
   useEffect(() => {
-    listarMateriasPorDocente(docenteMock.id)
+    listarMateriasPorDocente(1) // Usa un id fijo o pásalo como prop/contexto
       .then((res) => {
         const todasLasMaterias = res.data
-        const soloDelDocente = todasLasMaterias.filter(
-          (materia: any) => materia.id_docente === docenteMock.id
-        )
+        const soloDelDocente = todasLasMaterias // Si ya filtra por docente, no es necesario filtrar aquí
         console.log("Materias del docente:", soloDelDocente)
-        const cursosFormateados = soloDelDocente.map(
-          (materia: any, index: number) => ({
+        interface MateriaApi {
+          id?: string;
+          nombre_materia?: string;
+          nivel_estudio?: string;
+        }
+        const cursosFormateados: Course[] = soloDelDocente.map(
+          (materia: MateriaApi, index: number) => ({
             id: materia.id ?? `sin-id-${index}`,
             title: materia.nombre_materia || "Sin título",
             status: "published",
             students: 0,
-            modules: 0,
-            image: "/default.png",
+            rating: 0,
+            revenue: "",
+            lastUpdated: "",
             description: materia.nivel_estudio || "",
+            image: "/default.png",
+            modules: 0,
+            archivo: [],
+            duration: "",
+            color: "#000000"
           })
         )
         setCoursesData(cursosFormateados)

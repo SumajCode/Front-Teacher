@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   Dialog,
   DialogContent,
@@ -9,36 +9,30 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { crearTarea } from "@/services/tareaService";
 import {
-  CheckSquare,
-  ClipboardList,
-  FileCheck,
   Upload,
-  Video,
+  ClipboardList,
   ChevronRight,
   ChevronLeft,
   File,
   FileText,
   Trash,
-} from "lucide-react"
-import { v4 as uuidv4 } from "uuid"
-import { useAutosave } from "@/modules/courses/hooks/use-autosave"
-import { AutosaveIndicator } from "@/modules/courses/components/ui/autosave-indicator"
+} from "lucide-react";
 
 interface AddContentDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  contentType: string
-  setContentType: (type: string) => void
-  currentModuleId: string | null
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  contentType: string;
+  setContentType: (type: string) => void;
+  currentModuleId: string | null;
 }
-
-const AUTOSAVE_KEY = "add_content_autosave"
 
 export function AddContentDialog({
   open,
@@ -47,563 +41,194 @@ export function AddContentDialog({
   setContentType,
   currentModuleId,
 }: AddContentDialogProps) {
-  const [currentStep, setCurrentStep] = useState(1)
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [duration, setDuration] = useState("")
-  const [openDate, setOpenDate] = useState("")
-  const [closeDate, setCloseDate] = useState("")
-  const [publishDate, setPublishDate] = useState("")
-  const [resources, setResources] = useState<
-    { id: string; name: string; type: string }[]
-  >([])
-  const [newResourceName, setNewResourceName] = useState("")
+  const [currentStep, setCurrentStep] = useState(1);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [functionNames, setFunctionNames] = useState<string[]>([""]);
+  const [functionCodes, setFunctionCodes] = useState<string[]>([""]);
+  const [imports, setImports] = useState<string[]>([""]);
+  const [resources, setResources] = useState<{ id: string; name: string; type: string }[]>([]);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Datos para autoguardar
-  const formData = {
-    currentStep,
-    contentType,
-    title,
-    description,
-    duration,
-    openDate,
-    closeDate,
-    publishDate,
-    resources,
-    newResourceName,
-  }
-
-  // Usar el hook de autoguardado
-  const {
-    isAutosaving,
-    hasAutosavedData,
-    loadAutosavedData,
-    resetAutosavedData,
-  } = useAutosave({
-    key: AUTOSAVE_KEY,
-    data: formData,
-  })
-
-  // Cargar datos autoguardados al abrir el modal
-  useEffect(() => {
-    if (open) {
-      const savedData = loadAutosavedData()
-      if (savedData) {
-        setCurrentStep(savedData.currentStep || 1)
-        setContentType(savedData.contentType || "lesson")
-        setTitle(savedData.title || "")
-        setDescription(savedData.description || "")
-        setDuration(savedData.duration || "")
-        setOpenDate(savedData.openDate || "")
-        setCloseDate(savedData.closeDate || "")
-        setPublishDate(savedData.publishDate || "")
-        setResources(savedData.resources || [])
-        setNewResourceName(savedData.newResourceName || "")
-      }
-    }
-  }, [open])
-
-  // Resetear el estado cuando se cierra el diálogo
   const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      // No reiniciamos los datos al cerrar para mantener el autoguardado
-      onOpenChange(open)
-    } else {
-      onOpenChange(open)
-    }
+    setErrorMsg(null);
+    onOpenChange(open);
+  };
+
+  const handleBack = () => setCurrentStep(currentStep - 1);
+  const handleNext = () => setCurrentStep(currentStep + 1);
+
+const handleFinish = async () => {
+  if (!currentModuleId) {
+    
+    setErrorMsg("❌ No se ha proporcionado el ID del módulo.");
+    return;
   }
 
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1)
-  }
-
-  const handleBack = () => {
-    setCurrentStep(currentStep - 1)
-  }
-
-  const handleRemoveResource = (id: string) => {
-    setResources(resources.filter((resource) => resource.id !== id))
-  }
-
-  const handleFinish = () => {
-    // Aquí iría la lógica para guardar el nuevo contenido
-    console.log({
-      moduleId: currentModuleId,
-      type: contentType,
+    const payload = {
+    todo: "false",
+    data: {
+      id_modulo: currentModuleId,
       title,
-      description,
-      duration,
-      openDate,
-      closeDate,
-      publishDate,
-      resources,
-    })
+      type: "tarea",
+      content: {
+        description,
+        rules: {
+          functions: {
+            functionNames,
+            functionCodes,
+          },
+          imports,
+        },
+      },
+    },
+  carpeta_nombre: "Estructuras de Datos", // ✅ Inclúyelo si el backend lo espera
+  modulo: "Módulo 1 - Introducción",      // ✅ También si es necesario
+};
 
-    // Limpiar datos autoguardados
-    resetAutosavedData()
-
-    // Cerrar el diálogo
-    handleOpenChange(false)
+  try {
+    console.log("Payload a enviar:", payload); // 💡 útil para debug
+    const response = await crearTarea(payload);
+    console.log("Tarea creada con éxito:", response);
+    handleOpenChange(false);
+  } catch (error: unknown) {
+    console.error("Error al crear la tarea:", error);
+    setErrorMsg("❌ Error al crear la tarea.");
   }
+};
+
+  const color = "emerald";
 
   const getResourceIcon = (type: string) => {
-    switch (type) {
-      case "pdf":
-        return (
-          <div className="p-1 rounded-md bg-rose-100 text-rose-600">
-            <FileText className="h-4 w-4" />
-          </div>
-        )
-      case "doc":
-      case "docx":
-        return (
-          <div className="p-1 rounded-md bg-blue-100 text-blue-600">
-            <FileText className="h-4 w-4" />
-          </div>
-        )
-      case "zip":
-        return (
-          <div className="p-1 rounded-md bg-amber-100 text-amber-600">
-            <File className="h-4 w-4" />
-          </div>
-        )
-      default:
-        return (
-          <div className="p-1 rounded-md bg-gray-100 text-gray-600">
-            <File className="h-4 w-4" />
-          </div>
-        )
-    }
-  }
+    const baseClass = "p-1 rounded-md";
+    if (type === "pdf") return <div className={`${baseClass} bg-rose-100 text-rose-600`}><FileText className="h-4 w-4" /></div>;
+    if (["doc", "docx"].includes(type)) return <div className={`${baseClass} bg-blue-100 text-blue-600`}><FileText className="h-4 w-4" /></div>;
+    if (type === "zip") return <div className={`${baseClass} bg-amber-100 text-amber-600`}><File className="h-4 w-4" /></div>;
+    return <div className={`${baseClass} bg-gray-100 text-gray-600`}><File className="h-4 w-4" /></div>;
+  };
 
-  const getContentColor = () => {
-    switch (contentType) {
-      case "lesson":
-        return "blue"
-      case "quiz":
-        return "amber"
-      case "assignment":
-        return "emerald"
-      case "exam":
-        return "rose"
-      default:
-        return "blue"
-    }
-  }
+  const handleAddField = (setFunc: React.Dispatch<React.SetStateAction<string[]>>) => {
+    setFunc((prev: string[]) => [...prev, ""]);
+  };
 
-  const color = getContentColor()
+  const handleChangeField = (
+    setFunc: React.Dispatch<React.SetStateAction<string[]>>,
+    index: number,
+    value: string
+  ) => {
+    setFunc((prev: string[]) => {
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
+    });
+  };
 
-  function onAddResource(file: File): void {
-    const fileType = file.name.split(".").pop() || "pdf"
-    setResources((prev) => [
-      ...prev,
-      {
-        id: `resource-${uuidv4()}`,
-        name: file.name,
-        type: fileType,
-      },
-    ])
-  }
+  const onAddResource = (file: File) => {
+    const fileType = file.name.split(".").pop() || "pdf";
+    setResources(prev => [...prev, { id: `resource-${uuidv4()}`, name: file.name, type: fileType }]);
+  };
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="relative">
-          <div className="absolute right-0 top-0">
-            <AutosaveIndicator
-              isAutosaving={isAutosaving}
-              hasAutosavedData={hasAutosavedData}
-              onReset={resetAutosavedData}
-            />
-          </div>
-          <DialogTitle className={`text-${color}-700`}>
-            Añadir contenido
-          </DialogTitle>
+          <DialogTitle className={`text-${color}-700`}>Añadir tarea</DialogTitle>
           <DialogDescription>
-            Completa los siguientes pasos para añadir nuevo contenido al módulo
+            Completa los siguientes pasos para añadir una nueva tarea al módulo
           </DialogDescription>
         </DialogHeader>
 
-        {/* Indicador de pasos */}
-        <div className="mb-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center flex-1">
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 1
-                    ? `bg-${color}-600 text-white`
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                1
-              </div>
-              <div
-                className={`h-1 flex-1 mx-2 ${currentStep >= 2 ? `bg-${color}-600` : "bg-gray-200"}`}
-              ></div>
-            </div>
-            <div className="flex items-center flex-1">
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 2
-                    ? `bg-${color}-600 text-white`
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                2
-              </div>
-              <div
-                className={`h-1 flex-1 mx-2 ${currentStep >= 3 ? `bg-${color}-600` : "bg-gray-200"}`}
-              ></div>
-            </div>
-            <div className="flex items-center">
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                  currentStep >= 3
-                    ? `bg-${color}-600 text-white`
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                3
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between mt-1 text-xs text-gray-500">
-            <span
-              className={
-                currentStep >= 1 ? `text-${color}-600 font-medium` : ""
-              }
-            >
-              Tipo
-            </span>
-            <span
-              className={
-                currentStep >= 2 ? `text-${color}-600 font-medium` : ""
-              }
-            >
-              Detalles
-            </span>
-            <span
-              className={
-                currentStep >= 3 ? `text-${color}-600 font-medium` : ""
-              }
-            >
-              Recursos
-            </span>
-          </div>
-        </div>
+        {errorMsg && <p className="text-red-600 text-sm">{errorMsg}</p>}
 
-        {/* Paso 1: Selección de tipo de contenido */}
         {currentStep === 1 && (
           <div className="grid gap-4 py-4">
-            <RadioGroup
-              value={contentType}
-              onValueChange={setContentType}
-              className="grid grid-cols-2 gap-4"
-            >
+            <RadioGroup value={contentType} onValueChange={setContentType} className="grid grid-cols-2 gap-4">
               <div>
-                <RadioGroupItem
-                  value="lesson"
-                  id="lesson"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="lesson"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-50 [&:has([data-state=checked])]:border-blue-500 [&:has([data-state=checked])]:bg-blue-50"
-                >
-                  <Video className="mb-2 h-6 w-6 text-blue-500" />
-                  <div className="font-medium">Lección</div>
-                  <div className="text-xs text-muted-foreground">
-                    Añadir video o contenido
-                  </div>
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="quiz"
-                  id="quiz"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="quiz"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-amber-500 peer-data-[state=checked]:bg-amber-50 [&:has([data-state=checked])]:border-amber-500 [&:has([data-state=checked])]:bg-amber-50"
-                >
-                  <CheckSquare className="mb-2 h-6 w-6 text-amber-500" />
-                  <div className="font-medium">Cuestionario</div>
-                  <div className="text-xs text-muted-foreground">
-                    Añadir preguntas de evaluación
-                  </div>
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="assignment"
-                  id="assignment"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="assignment"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 [&:has([data-state=checked])]:border-emerald-500 [&:has([data-state=checked])]:bg-emerald-50"
-                >
+                <RadioGroupItem value="assignment" id="assignment" className="peer sr-only" />
+                <Label htmlFor="assignment" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50">
                   <ClipboardList className="mb-2 h-6 w-6 text-emerald-500" />
                   <div className="font-medium">Tarea</div>
-                  <div className="text-xs text-muted-foreground">
-                    Añadir tarea práctica
-                  </div>
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="exam"
-                  id="exam"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="exam"
-                  className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rose-500 peer-data-[state=checked]:bg-rose-50 [&:has([data-state=checked])]:border-rose-500 [&:has([data-state=checked])]:bg-rose-50"
-                >
-                  <FileCheck className="mb-2 h-6 w-6 text-rose-500" />
-                  <div className="font-medium">Examen</div>
-                  <div className="text-xs text-muted-foreground">
-                    Añadir evaluación final
-                  </div>
+                  <div className="text-xs text-muted-foreground">Añadir tarea práctica</div>
                 </Label>
               </div>
             </RadioGroup>
           </div>
         )}
 
-        {/* Paso 2: Detalles específicos según el tipo */}
         {currentStep === 2 && (
           <div className="space-y-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="content-title" className={`text-${color}-600`}>
-                Título *
-              </Label>
-              <Input
-                id="content-title"
-                placeholder={`Ej: ${
-                  contentType === "lesson"
-                    ? "Introducción a HTML"
-                    : contentType === "quiz"
-                      ? "Cuestionario de conceptos básicos"
-                      : contentType === "assignment"
-                        ? "Tarea práctica"
-                        : "Examen final"
-                }`}
-                className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
+              <Label htmlFor="content-title" className={`text-${color}-600`}>Título *</Label>
+              <Input id="content-title" placeholder="Ej: Tarea práctica" className={`border-${color}-200 focus-visible:ring-${color}-500`} value={title} onChange={(e) => setTitle(e.target.value)} required />
             </div>
             <div className="grid gap-2">
-              <Label
-                htmlFor="content-description"
-                className={`text-${color}-600`}
-              >
-                Descripción
-              </Label>
-              <Textarea
-                id="content-description"
-                placeholder="Describe este contenido..."
-                className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              <Label htmlFor="content-description" className={`text-${color}-600`}>Descripción</Label>
+              <Textarea id="content-description" placeholder="Describe este contenido..." className={`border-${color}-200 focus-visible:ring-${color}-500`} value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
+
+            {[{ label: "Nombres de funciones", items: functionNames, setter: setFunctionNames, id: "func" },
+              { label: "Código de funciones", items: functionCodes, setter: setFunctionCodes, id: "funccode" },
+              { label: "Imports requeridos", items: imports, setter: setImports, id: "import" },
+            ].map(({ label, items, setter, id }) => (
+              <div key={id} className="grid gap-2">
+                <Label className={`text-${color}-600`}>{label}</Label>
+                {items.map((val, i) => (
+                  <Input key={i} placeholder={`${label.split(" ")[0]} ${i + 1}`} value={val} onChange={(e) => handleChangeField(setter, i, e.target.value)} className={`border-${color}-200 focus-visible:ring-${color}-500`} />
+                ))}
+                <Button type="button" variant="ghost" onClick={() => handleAddField(setter)} className={`text-${color}-600`}>
+                  + Añadir {label.toLowerCase().split(" ")[0]}
+                </Button>
+              </div>
+            ))}
+
             <div className="grid gap-2">
-              <Label htmlFor="content-duration" className={`text-${color}-600`}>
-                Duración *
-              </Label>
-              <Input
-                id="content-duration"
-                placeholder="Ej: 30 min, 2 horas, etc."
-                className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                required
-              />
-            </div>
-
-            {contentType !== "lesson" && (
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="content-open" className={`text-${color}-600`}>
-                    Fecha de apertura
-                  </Label>
-                  <Input
-                    id="content-open"
-                    type="datetime-local"
-                    className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                    value={openDate}
-                    onChange={(e) => setOpenDate(e.target.value)}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label
-                    htmlFor="content-close"
-                    className={`text-${color}-600`}
-                  >
-                    Fecha de cierre
-                  </Label>
-                  <Input
-                    id="content-close"
-                    type="datetime-local"
-                    className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                    value={closeDate}
-                    onChange={(e) => setCloseDate(e.target.value)}
-                  />
-                </div>
+              <Label htmlFor="resource-files">Recursos</Label>
+              <input id="resource-files" type="file" multiple className="hidden" onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                files.forEach((file) => onAddResource(file));
+                e.target.value = "";
+              }} />
+              <div className="border-2 border-dashed border-emerald-200 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:border-emerald-400" onClick={() => document.getElementById("resource-files")?.click()} onDrop={(e) => {
+                e.preventDefault();
+                const files = Array.from(e.dataTransfer.files);
+                files.forEach((file) => onAddResource(file));
+              }} onDragOver={(e) => e.preventDefault()}>
+                <Upload className="h-8 w-8 text-emerald-400 mb-2" />
+                <span className="text-emerald-600 font-medium">Haz clic o arrastra archivos para añadir</span>
+                <span className="text-xs text-muted-foreground mt-1">Puedes añadir varios archivos a la vez</span>
               </div>
-            )}
-
-            {contentType !== "lesson" && (
-              <div className="grid gap-2">
-                <Label
-                  htmlFor="content-publish"
-                  className={`text-${color}-600`}
-                >
-                  Fecha de publicación
-                </Label>
-                <Input
-                  id="content-publish"
-                  type="datetime-local"
-                  className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                  value={publishDate}
-                  onChange={(e) => setPublishDate(e.target.value)}
-                />
-              </div>
-            )}
-
-            {contentType === "lesson" && (
-              <div className="grid gap-2">
-                <Label htmlFor="lesson-video" className={`text-${color}-600`}>
-                  Video
-                </Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    id="lesson-video"
-                    type="file"
-                    accept="video/*"
-                    className={`border-${color}-200 focus-visible:ring-${color}-500`}
-                  />
-                  <Button
-                    variant="outline"
-                    className={`border-${color}-200 text-${color}-600 hover:bg-${color}-50`}
-                  >
-                    <Upload className="mr-2 h-4 w-4" />
-                    Subir
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Paso 3: Añadir recursos */}
-        {currentStep === 3 && (
-          <div className="space-y-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="resource-files">
-                Arrastra y suelta archivos aquí
-              </Label>
-              <input
-                id="resource-files"
-                type="file"
-                multiple
-                className="hidden"
-                onChange={(e) => {
-                  const files = Array.from(e.target.files || [])
-                  files.forEach((file) => onAddResource(file))
-                  e.target.value = "" // Reset input for same file upload
-                }}
-              />
-              <div
-                className="border-2 border-dashed border-blue-200 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 transition"
-                onClick={() =>
-                  document.getElementById("resource-files")?.click()
-                }
-                onDrop={(e) => {
-                  e.preventDefault()
-                  const files = Array.from(e.dataTransfer.files)
-                  files.forEach((file) => onAddResource(file))
-                }}
-                onDragOver={(e) => e.preventDefault()}
-              >
-                <Upload className="h-8 w-8 text-blue-400 mb-2" />
-                <span className="text-blue-600 font-medium">
-                  Haz clic o arrastra archivos para añadir
-                </span>
-                <span className="text-xs text-muted-foreground mt-1">
-                  Puedes añadir varios archivos a la vez
-                </span>
-              </div>
-            </div>
-
-            <div className={`border border-${color}-100 rounded-md p-4 mt-4`}>
-              <h4 className="font-medium mb-2">Recursos añadidos</h4>
-              {resources.length > 0 ? (
-                <div className="space-y-2">
-                  {resources.map((resource) => (
-                    <div
-                      key={resource.id}
-                      className="flex items-center justify-between py-2 border-b last:border-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        {getResourceIcon(resource.type)}
-                        <span>{resource.name}</span>
+              <div className={`border border-${color}-100 rounded-md p-4 mt-4`}>
+                <h4 className="font-medium mb-2">Recursos añadidos</h4>
+                {resources.length > 0 ? (
+                  <div className="space-y-2">
+                    {resources.map((resource) => (
+                      <div key={resource.id} className="flex items-center justify-between py-2 border-b last:border-0">
+                        <div className="flex items-center gap-2">{getResourceIcon(resource.type)}<span>{resource.name}</span></div>
+                        <Button variant="ghost" size="sm" className="h-8 text-red-600 hover:text-red-800 hover:bg-red-100" onClick={() => setResources(resources.filter(r => r.id !== resource.id))}>
+                          <Trash className="h-3 w-3" />
+                        </Button>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={`h-8 text-red-600 hover:text-red-800 hover:bg-red-100`}
-                        onClick={() => handleRemoveResource(resource.id)}
-                      >
-                        <Trash className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No hay recursos añadidos todavía
-                </p>
-              )}
+                    ))}
+                  </div>
+                ) : <p className="text-sm text-muted-foreground">No hay recursos añadidos todavía</p>}
+              </div>
             </div>
           </div>
         )}
 
         <DialogFooter className="flex justify-between">
           {currentStep > 1 ? (
-            <Button variant="outline" onClick={handleBack}>
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Atrás
-            </Button>
+            <Button variant="outline" onClick={handleBack}><ChevronLeft className="mr-2 h-4 w-4" />Atrás</Button>
           ) : (
-            <Button variant="outline" onClick={() => handleOpenChange(false)}>
-              Cancelar
-            </Button>
+            <Button variant="outline" onClick={() => handleOpenChange(false)}>Cancelar</Button>
           )}
-
-          {currentStep < 3 ? (
-            <Button
-              className={`bg-${color}-600 hover:bg-${color}-700`}
-              onClick={handleNext}
-              disabled={currentStep === 2 && (!title || !duration)}
-            >
-              Siguiente
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+          {currentStep === 1 ? (
+            <Button className={`bg-${color}-600 hover:bg-${color}-700`} onClick={handleNext}>Siguiente<ChevronRight className="ml-2 h-4 w-4" /></Button>
           ) : (
-            <Button
-              className={`bg-${color}-600 hover:bg-${color}-700`}
-              onClick={handleFinish}
-            >
-              Finalizar
-            </Button>
+            <Button className={`bg-${color}-600 hover:bg-${color}-700`} onClick={handleFinish}>Finalizar</Button>
           )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

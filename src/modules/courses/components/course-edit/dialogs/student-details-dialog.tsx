@@ -58,7 +58,7 @@ export function StudentDetailsDialog({ open, onOpenChange, student, modules }: S
             <h4 className="font-medium">Módulos completados</h4>
             <div className="space-y-2">
               {modules.map((module, index) => (
-                <div key={module.id} className="flex items-center justify-between border-b pb-2">
+                <div key={module._id} className="flex items-center justify-between border-b pb-2">
                   <div>
                     <p className="font-medium">{module.title}</p>
                     <p className="text-sm text-muted-foreground">
