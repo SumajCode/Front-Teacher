@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -76,8 +76,8 @@
   --sidebar-foreground: #ffffff; /* blanco */
   --sidebar-primary: #2546f0; /* azul eléctrico */
   --sidebar-primary-foreground: #ffffff; /* blanco */
-  --sidebar-accent: rgb(107, 107, 248); /* verde lima */
-  --sidebar-accent-foreground: #000000; /* negro */
+  --sidebar-accent: #29204a; /* verde lima */
+  --sidebar-accent-foreground: #9850cc; /* negro */
   --sidebar-border: #00b4c5; /* turquesa brillante */
   --sidebar-ring: #5928ed; /* violeta */
   --background: oklch(1 0 0);
