@@ -25,6 +25,7 @@ import { useCourseFilters } from "@/modules/courses/hooks/use-course-filters"
 
 import { Plus, Search } from "lucide-react"
 import { CreateCourseDialog } from "@/modules/courses/components/create-course/create-course-dialog"
+import { docenteMock } from "@/lib/docenteMock"
 
 export function CoursesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
@@ -42,12 +43,14 @@ export function CoursesPage() {
     listarMateriasPorDocente(1) // Usa un id fijo o pásalo como prop/contexto
       .then((res) => {
         const todasLasMaterias = res.data
-        const soloDelDocente = todasLasMaterias // Si ya filtra por docente, no es necesario filtrar aquí
-        console.log("Materias del docente:", soloDelDocente)
+
+        const soloDelDocente = todasLasMaterias.filter(
+          (materia: any) => materia.id_docente === docenteMock.id
+        )
         interface MateriaApi {
-          id?: string;
-          nombre_materia?: string;
-          nivel_estudio?: string;
+          id?: string
+          nombre_materia?: string
+          nivel_estudio?: string
         }
         const cursosFormateados: Course[] = soloDelDocente.map(
           (materia: MateriaApi, index: number) => ({
@@ -63,7 +66,7 @@ export function CoursesPage() {
             modules: 0,
             archivo: [],
             duration: "",
-            color: "#000000"
+            color: "#000000",
           })
         )
         setCoursesData(cursosFormateados)
