@@ -1,9 +1,8 @@
 const API_URL =
   "https://microservice-content.onrender.com/apicontenido/v1/modulo"
 
-export async function listarModulos(data: any) {
+export async function listarModulos() {
   console.log("respuesta modulo all")
-  const params = new URLSearchParams({ todo: "true" }).toString()
   // Obtener los módulos
   const res = await fetch(`${API_URL}/contenido`, {
     method: "GET",
@@ -17,7 +16,7 @@ export async function listarModulos(data: any) {
   return json
 }
 
-export async function crearModulo(data: any) {
+export async function crearModulo(data: unknown) {
   const res = await fetch(`${API_URL}/crear`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -26,7 +25,7 @@ export async function crearModulo(data: any) {
   return res.json()
 }
 
-export async function editarModulo(data: any, id: string) {
+export async function editarModulo(data: unknown, id: string) {
   const res = await fetch(`${API_URL}/editar`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

@@ -77,7 +77,7 @@ front-docente/
 
 ---
 
-## ⚙️ GitHub Actions - CI
+## ⚙️ GitHub Actions-CI
 
 En `.github/workflows/ci.yml` se define un flujo de trabajo de Integración Continua:
 

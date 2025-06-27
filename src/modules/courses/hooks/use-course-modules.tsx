@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { v4 as uuidv4 } from "uuid"
-import type { Module, Lesson, Resource } from "@/modules/courses/types"
+import type { Module } from "@/modules/courses/types"
 import {
   listarModulos,
   crearModulo,
@@ -25,12 +24,14 @@ export function useCourseModules() {
   const fetchModules = async () => {
     setLoading(true)
     try {
-      const response = await listarModulos({
-        id_docente,
-        id_materia,
-      })
+      const response = await listarModulos() // No recibe argumentos
+
       if (response?.status === 200 && Array.isArray(response.data)) {
-        setModules(response.data)
+        const parsedModules = response.data.map((mod: Record<string, unknown>) => ({
+          ...mod,
+          id: (mod as { _id?: string })._id,
+        }))
+        setModules(parsedModules as Module[])
       } else {
         console.warn("No se encontraron módulos:", response.message)
       }
@@ -82,67 +83,12 @@ export function useCourseModules() {
     }
   }
 
-  // ✅ Corregido para aceptar nombre de recurso en lugar de archivo File
-  const handleAddResource = (resourceName: string, lesson: Lesson) => {
-    const fileType = resourceName.split(".").pop() || "pdf"
-
-    const newResource: Resource = {
-      id: `resource-${uuidv4()}`,
-      name: resourceName,
-      type: fileType,
-    }
-
-    const updatedModules = modules.map((module) => {
-      const updatedLessons = module.lessons.map((l) => {
-        if (l.id === lesson.id) {
-          return {
-            ...l,
-            resources: [...l.resources, newResource],
-          }
-        }
-        return l
-      })
-
-      return {
-        ...module,
-        lessons: updatedLessons,
-      }
-    })
-
-    setModules(updatedModules)
-  }
-
-  const handleDeleteResource = (resourceId: string, lessonId: string) => {
-    const updatedModules = modules.map((module) => {
-      const updatedLessons = module.lessons.map((lesson) => {
-        if (lesson.id === lessonId) {
-          return {
-            ...lesson,
-            resources: lesson.resources.filter(
-              (resource) => resource.id !== resourceId
-            ),
-          }
-        }
-        return lesson
-      })
-
-      return {
-        ...module,
-        lessons: updatedLessons,
-      }
-    })
-
-    setModules(updatedModules)
-  }
-
   return {
     modules,
     loading,
-    setModules, // ✅ exportado explícitamente para evitar error
+    setModules,
     addModule,
     updateModule,
     deleteModule,
-    handleAddResource,
-    handleDeleteResource,
   }
 }

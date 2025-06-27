@@ -1,6 +1,6 @@
 import React from "react"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, CheckSquare, ClipboardList, FileCheck, FileText, File, Video } from "lucide-react"
+import { FileText, File } from "lucide-react"
 
 export function getStatusBadge(status: string) {
   switch (status) {
@@ -37,21 +37,6 @@ export function getColorClass(color: string) {
       return "from-purple-500 to-purple-700"
     default:
       return "from-blue-500 to-blue-700"
-  }
-}
-
-export function getLessonIcon(type: string) {
-  switch (type) {
-    case "video":
-      return <Video className="h-4 w-4 text-blue-600" />
-    case "quiz":
-      return <CheckSquare className="h-4 w-4 text-amber-600" />
-    case "assignment":
-      return <ClipboardList className="h-4 w-4 text-emerald-600" />
-    case "exam":
-      return <FileCheck className="h-4 w-4 text-rose-600" />
-    default:
-      return <BookOpen className="h-4 w-4 text-gray-600" />
   }
 }
 

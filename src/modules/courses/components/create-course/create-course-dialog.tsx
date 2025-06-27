@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,20 +10,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useAutosave } from "@/modules/courses/hooks/use-autosave"
-import { AutosaveIndicator } from "@/modules/courses/components/ui/autosave-indicator"
-import { StepIndicator } from "@/modules/courses/components/create-course/steps/step-indicator"
-import { Step1Info } from "@/modules/courses/components/create-course/steps/step1-info"
 import { crearMateria } from "@/services/materiaService"
 import { docenteMock } from "@/lib/docenteMock"
-import { Step2Image } from "@/modules/courses/components/create-course/steps/step2-image"
+import { StepIndicator } from "@/modules/courses/components/create-course/steps/step-indicator"
+import { Step1Info } from "@/modules/courses/components/create-course/steps/step1-info"
 
 interface CreateCourseDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
-
-const AUTOSAVE_KEY = "course_creation_autosave"
 
 export function CreateCourseDialog({
   open,
@@ -34,37 +29,6 @@ export function CreateCourseDialog({
 
   const [title, setTitle] = useState("")
   const [nivelEstudio, setNivelEstudio] = useState("")
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-
-  const formData = {
-    currentStep,
-    title,
-    nivelEstudio,
-    imagePreview,
-  }
-
-  const {
-    isAutosaving,
-    hasAutosavedData,
-    loadAutosavedData,
-    resetAutosavedData,
-  } = useAutosave({
-    key: AUTOSAVE_KEY,
-    data: formData,
-  })
-
-  useEffect(() => {
-    if (open) {
-      const savedData = loadAutosavedData()
-      if (savedData) {
-        setCurrentStep(savedData.currentStep || 1)
-        setTitle(savedData.title || "")
-        setNivelEstudio(savedData.nivelEstudio || "")
-        setImagePreview(savedData.imagePreview || null)
-      }
-    }
-  }, [open])
 
   const handleOpenChange = (open: boolean) => {
     onOpenChange(open)
@@ -83,7 +47,6 @@ export function CreateCourseDialog({
         id_docente: docenteMock.id,
       })
 
-      resetAutosavedData()
       handleOpenChange(false)
       window.location.reload()
     } catch (error) {
@@ -96,13 +59,6 @@ export function CreateCourseDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="relative">
-          <div className="absolute right-0 top-0">
-            <AutosaveIndicator
-              isAutosaving={isAutosaving}
-              hasAutosavedData={hasAutosavedData}
-              onReset={resetAutosavedData}
-            />
-          </div>
           <DialogTitle className="text-xl">Crear nuevo curso</DialogTitle>
           <DialogDescription>
             Completa los siguientes pasos para crear un nuevo curso
@@ -118,14 +74,6 @@ export function CreateCourseDialog({
               setTitle={setTitle}
               nivelEstudio={nivelEstudio}
               setNivelEstudio={setNivelEstudio}
-            />
-          )}
-
-          {currentStep === 2 && (
-            <Step2Image
-              imagePreview={imagePreview}
-              setImagePreview={setImagePreview}
-              setImageFile={setImageFile}
             />
           )}
 

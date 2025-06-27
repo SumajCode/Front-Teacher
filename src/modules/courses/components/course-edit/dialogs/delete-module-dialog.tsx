@@ -15,24 +15,22 @@ interface DeleteModuleDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   moduleId: string | null
-  onConfirm: (moduleId: string) => void
 }
 
 export function DeleteModuleDialog({
   open,
   onOpenChange,
   moduleId,
-  onConfirm,
 }: DeleteModuleDialogProps) {
   if (!moduleId) return null
-  const onDelete = async (id: any) => {
-    console.log("iasdasd", id._id)
+  const onDelete = async (id: unknown) => {
+    console.log("iasdasd", (id as { _id: string })._id)
     const body = {
-      filter: { _id: id._id },
+      filter: { _id: (id as { _id: string })._id },
       todo: false,
     }
     try {
-      const response = await fetch(
+      await fetch(
         "https://microservice-content.onrender.com/apicontenido/v1/modulo/crear",
         {
           method: "POST",

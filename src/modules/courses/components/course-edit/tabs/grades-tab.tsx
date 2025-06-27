@@ -34,15 +34,15 @@ export function GradesTab({ modules, studentGrades }: GradesTabProps) {
                 <th className="p-3 bg-green-50">Estudiante</th>
                 {modules
                   .flatMap((module) =>
-                    module.lessons.filter(
-                      (lesson) =>
-                        lesson.type === "quiz" ||
-                        lesson.type === "assignment" ||
-                        lesson.type === "exam"
+                    module.contenido.filter(
+                      (item) =>
+                        item.type === "quiz" ||
+                        item.type === "assignment" ||
+                        item.type === "exam"
                     )
                   )
                   .map((evaluation) => (
-                    <th key={evaluation.id} className="p-3 bg-green-50">
+                    <th key={evaluation._id} className="p-3 bg-green-50">
                       <div className="flex flex-col">
                         <span className="font-medium">{evaluation.title}</span>
                         <span className="text-xs text-muted-foreground">
@@ -84,16 +84,16 @@ export function GradesTab({ modules, studentGrades }: GradesTabProps) {
                     <td className="p-3 font-medium">{student.name}</td>
                     {modules
                       .flatMap((module) =>
-                        module.lessons.filter(
-                          (lesson) =>
-                            lesson.type === "quiz" ||
-                            lesson.type === "assignment" ||
-                            lesson.type === "exam"
+                        module.contenido.filter(
+                          (item) =>
+                            item.type === "quiz" ||
+                            item.type === "assignment" ||
+                            item.type === "exam"
                         )
                       )
                       .map((evaluation) => {
                         const studentGrade = student.grades.find(
-                          (grade) => grade.evaluationId === evaluation.id
+                          (grade) => grade.evaluationId === evaluation._id
                         )
                         const grade = studentGrade ? studentGrade.grade : "-"
                         const gradeColor =
@@ -107,7 +107,7 @@ export function GradesTab({ modules, studentGrades }: GradesTabProps) {
 
                         return (
                           <td
-                            key={`${student.studentId}-${evaluation.id}`}
+                            key={`${student.studentId}-${evaluation._id}`}
                             className="p-3"
                           >
                             <span

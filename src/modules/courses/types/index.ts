@@ -24,18 +24,6 @@ export interface Resource {
   type: string
 }
 
-export interface Lesson {
-  id: string
-  title: string
-  type: "video" | "quiz" | "assignment" | "exam"
-  duration: string
-  resources: Resource[]
-  openDate?: string
-  closeDate?: string
-  publishDate?: string
-  grade?: number
-}
-
 // Represents additional rules for assignments or quizzes
 export interface Rules {
   functions?: {
@@ -44,7 +32,7 @@ export interface Rules {
   imports?: string[]
 }
 
-// Represents a content item (lesson, assignment, quiz, etc.) in a module
+// Represents a content item (assignment, quiz, etc.) in a module
 export interface ContentItem {
   _id: string
   id_contenido: string
@@ -62,8 +50,18 @@ export interface ContentItem {
   files?: string[]
 }
 
+// Extiende ContentItem para incluir recursos (para edición de asignaciones)
+export interface AssignmentWithResources extends ContentItem {
+  resources?: {
+    id: string
+    name: string
+    type: string
+  }[]
+  id: string // para compatibilidad con el diálogo
+}
+
 export interface Module {
-  id: string
+  _id: string
   title: string
   archivos: Archivos[]
   // content items for this module

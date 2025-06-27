@@ -1,19 +1,47 @@
 "use client"
 
-import { Plus, Users } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Users, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import type { Student } from "@/modules/courses/types"
 
-interface StudentsTabProps {
-  students: Student[]
-  onAddStudent: () => void
-  onViewStudentDetails: (student: Student) => void
+interface Student {
+  nombre_estudiante: string
+  apellido_estudiante: string
+  correo_estudiante: string
 }
 
-export function StudentsTab({ students, onAddStudent, onViewStudentDetails }: StudentsTabProps) {
+interface StudentsTabProps {
+  courseId: string
+  onAddStudent: () => void
+  onViewStudentDetails: (student: Student) => void
+  key?: string
+  refreshTrigger: number // nuevo: para forzar recarga
+}
+
+export function StudentsTab({ courseId, onAddStudent, onViewStudentDetails, refreshTrigger }: StudentsTabProps) {
+  const [students, setStudents] = useState<Student[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await fetch(
+          `https://microservice-docente.onrender.com/apidocentes/v1/matricula/listar/materia?id_materia=${courseId}`
+        )
+        const data = await res.json()
+        setStudents(data.data || [])
+      } catch (error) {
+        console.error("Error al obtener estudiantes:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStudents()
+  }, [courseId, refreshTrigger]) // refreshTrigger activará useEffect
+
   return (
     <Card className="border-purple-200 shadow-md">
       <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900">
@@ -37,67 +65,34 @@ export function StudentsTab({ students, onAddStudent, onViewStudentDetails }: St
           </Button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b text-left text-sm font-medium text-muted-foreground">
-                <th className="pb-3">Estudiante</th>
-                <th className="pb-3">Progreso</th>
-                <th className="pb-3">Última actividad</th>
-                <th className="pb-3">Tareas completadas</th>
-                <th className="pb-3">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student.id} className="border-b">
-                  <td className="py-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarImage src={`/placeholder.svg?height=32&width=32&text=${student.name.charAt(0)}`} />
-                        <AvatarFallback className="bg-purple-100 text-purple-600">
-                          {student.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{student.name}</div>
-                        <div className="text-sm text-muted-foreground">{student.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-24 rounded-full bg-gray-100">
-                        <div
-                          className="h-full rounded-full bg-purple-500"
-                          style={{ width: `${student.progress}%` }}
-                        ></div>
-                      </div>
-                      <span>{student.progress}%</span>
-                    </div>
-                  </td>
-                  <td className="py-3">{student.lastActive}</td>
-                  <td className="py-3">3/5</td>
-                  <td className="py-3">
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-purple-200 text-purple-600 hover:bg-purple-50"
-                        onClick={() => onViewStudentDetails(student)}
-                      >
-                        Ver detalles
-                      </Button>
-                      <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 hover:bg-blue-50">
-                        Mensaje
-                      </Button>
-                    </div>
-                  </td>
+        {loading ? (
+          <p className="text-sm text-muted-foreground">Cargando estudiantes...</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b text-left text-sm font-medium text-muted-foreground">
+                  <th className="pb-3">Nombre</th>
+                  <th className="pb-3">Apellido</th>
+                  <th className="pb-3">Correo</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {students.map((student, index) => (
+                  <tr
+                    key={index}
+                    className="border-b hover:bg-gray-100 cursor-pointer"
+                    onClick={() => onViewStudentDetails(student)}
+                  >
+                    <td className="py-3">{student.nombre_estudiante}</td>
+                    <td className="py-3">{student.apellido_estudiante}</td>
+                    <td className="py-3">{student.correo_estudiante}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </CardContent>
     </Card>
   )

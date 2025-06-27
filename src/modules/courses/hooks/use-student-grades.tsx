@@ -9,47 +9,27 @@ const initialStudentGrades: StudentGrade[] = [
   {
     studentId: "student-1",
     name: "Ana García Solano",
-    grades: [
-      { evaluationId: "lesson-2", grade: 85 },
-      { evaluationId: "lesson-4", grade: 78 },
-      { evaluationId: "lesson-6", grade: 0 },
-    ],
+    grades: [],
   },
   {
     studentId: "student-2",
     name: "Carlos Rodríguez",
-    grades: [
-      { evaluationId: "lesson-2", grade: 70 },
-      { evaluationId: "lesson-4", grade: 65 },
-      { evaluationId: "lesson-6", grade: 0 },
-    ],
+    grades: [],
   },
   {
     studentId: "student-3",
     name: "Laura Martínez",
-    grades: [
-      { evaluationId: "lesson-2", grade: 95 },
-      { evaluationId: "lesson-4", grade: 90 },
-      { evaluationId: "lesson-6", grade: 0 },
-    ],
+    grades: [],
   },
   {
     studentId: "student-4",
     name: "Miguel Sánchez",
-    grades: [
-      { evaluationId: "lesson-2", grade: 60 },
-      { evaluationId: "lesson-4", grade: 55 },
-      { evaluationId: "lesson-6", grade: 0 },
-    ],
+    grades: [],
   },
   {
     studentId: "student-5",
     name: "Sofía López",
-    grades: [
-      { evaluationId: "lesson-2", grade: 80 },
-      { evaluationId: "lesson-4", grade: 75 },
-      { evaluationId: "lesson-6", grade: 0 },
-    ],
+    grades: [],
   },
 ]
 
